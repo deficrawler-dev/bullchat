@@ -327,69 +327,103 @@
   .tab.active{color:var(--sig);}
   .tab svg{width:20px; height:20px;}
 
-  /* ---- page shell: desktop split layout ---- */
-  html, body{height:100%;}
-  body{
-    font-family:var(--font-body);
-    background:#05070A;
-    color:var(--text-primary);
-    margin:0; padding:0;
-    min-height:100vh;
-    display:block;
-  }
-  .page-shell{
-    display:flex;
-    min-height:100vh;
-  }
-  .hero-side{
-    flex:1.1;
-    position:relative;
+  /* ==========================================
+   PREMIUM PRODUCT SHOWCASE
+========================================== */
+
+html,
+body{
+    width:100%;
+    height:100%;
+}
+
+body{
+    margin:0;
     background:#05070A;
     display:flex;
-    align-items:center;
     justify-content:center;
+    align-items:center;
     padding:60px;
-  }
-  .hero-card{
-    width:min(440px, 88%);
-    height:min(620px, 82vh);
-    border-radius:28px;
-    background:#05100A;
-    box-shadow:0 40px 90px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.04);
     overflow:hidden;
-  }
-  .hero-img{
+}
+
+.page-shell{
+    width:100%;
+    max-width:1050px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:56px;
+}
+
+.hero-side{
+    flex:none;
+}
+
+.hero-card{
+    width:420px;
+    aspect-ratio:1;
+    overflow:hidden;
+    border-radius:28px;
+    background:#08100A;
+
+    box-shadow:
+        0 35px 90px rgba(0,0,0,.65),
+        0 0 45px rgba(57,217,83,.08);
+}
+
+.hero-img{
     width:100%;
     height:100%;
     object-fit:cover;
-    object-position:center 30%;
-    display:block;
-  }
-  .hero-side::after{
-    content:'';
-    position:absolute; inset:0;
-    background:linear-gradient(90deg, rgba(5,7,10,0) 60%, #05070A 100%);
-    pointer-events:none;
-  }
-  .app-side{
-    flex:0 0 460px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:32px;
-  }
-  @media (max-width:900px){
-    .hero-side{display:none;}
-    .app-side{flex:1; padding:0;}
+}
+
+.app-side{
+    flex:none;
+}
+
+.frame{
+    width:380px;
+    height:800px;
+}
+
+@media (max-width:900px){
+
+    body{
+        padding:24px;
+    }
+
+    .page-shell{
+        flex-direction:column;
+        gap:32px;
+    }
+
+    .hero-card{
+        width:320px;
+    }
   }
 </style>
 </head>
 <body>
 
 <div class="page-shell">
-<div class="hero-side"><div class="hero-card"><img class="hero-img" src="https://raw.githubusercontent.com/deficrawler-dev/bullchat/refs/heads/main/Bullchat.png" alt="Bullchat" /></div></div>
-<div class="app-side">
-<div class="frame">
+
+    <div class="hero-side">
+
+        <div class="hero-card">
+
+            <img
+                class="hero-img"
+                src="https://raw.githubusercontent.com/deficrawler-dev/bullchat/refs/heads/main/Bullchat.png"
+            >
+
+        </div>
+
+    </div>
+
+    <div class="app-side">
+
+        <div class="frame">
 
   <!-- SCREEN: SIGN IN -->
   <div class="screen active" id="signin">
