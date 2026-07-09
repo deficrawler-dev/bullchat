@@ -35,28 +35,6 @@
     padding:32px 12px;
     min-height:100vh;
   }
-  .frame{
-    width:390px;
-    height:800px;
-    background:var(--bg);
-    border-radius:34px;
-    border:1px solid #232B24;
-    box-shadow:0 30px 80px rgba(0,0,0,0.6);
-    overflow:hidden;
-    position:relative;
-    display:flex;
-    flex-direction:column;
-  }
-  @media (max-width:900px){
-    .frame{
-      width:100vw;
-      height:100vh;
-      height:100dvh;
-      border-radius:0;
-      border:none;
-      box-shadow:none;
-    }
-  }
   .frame::before{
     content:'';
     position:absolute; inset:0;
@@ -132,23 +110,36 @@
 
   /* ---- SIGN IN ---- */
   #signin{
-    padding:0 28px;
+ 
+    display:flex;
+    flex-direction:column;
+
     justify-content:center;
     align-items:center;
+
     text-align:center;
-    gap:0;
+
+    padding:40px 28px;
+
+    gap:18px;
+
     background:radial-gradient(circle at 50% 0%, #16130A 0%, var(--bg) 55%);
   }
-  .brand-mark-img{
-    width:150px;height:150px;
+ .brand-mark-img{
+    width:115px;
+    height:115px;
+
     object-fit:contain;
-    margin-bottom:6px;
   }
   .topbar-logo{
     width:36px;height:36px;object-fit:contain;
   }
-  #signin .wordmark{font-size:34px; margin-bottom:6px;}
-  #signin .tagline{font-size:14px; color:var(--text-secondary); margin-bottom:36px;}
+  #signin .wordmark{
+    font-size:30px;
+  }
+ #signin .tagline{
+    margin-bottom:18px;
+}
   .signin-actions{width:100%; display:flex; flex-direction:column; gap:10px;}
   .anon-note{margin-top:14px; font-size:11px; color:var(--text-muted); line-height:1.5;}
 
@@ -338,13 +329,17 @@ body{
 }
 
 body{
-    margin:0;
+    font-family:var(--font-body);
     background:#05070A;
+    color:var(--text-primary);
+
     display:flex;
     justify-content:center;
     align-items:center;
+
+    min-height:100vh;
+
     padding:60px;
-    overflow:hidden;
 }
 
 .page-shell{
