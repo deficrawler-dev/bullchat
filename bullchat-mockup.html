@@ -344,14 +344,24 @@
   .hero-side{
     flex:1.1;
     position:relative;
-    background-image:url('https://raw.githubusercontent.com/deficrawler-dev/bullchat/refs/heads/main/Bullchat.png');
-    background-size:cover;
-    background-position:center;
+    background:
+      radial-gradient(circle at 50% 45%, #0E2515 0%, #05070A 62%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:60px;
+    overflow:hidden;
+  }
+  .hero-img{
+    max-width:62%;
+    max-height:62vh;
+    object-fit:contain;
   }
   .hero-side::after{
     content:'';
     position:absolute; inset:0;
-    background:linear-gradient(90deg, rgba(5,7,10,0) 55%, #05070A 100%);
+    background:linear-gradient(90deg, rgba(5,7,10,0) 60%, #05070A 100%);
+    pointer-events:none;
   }
   .app-side{
     flex:0 0 460px;
@@ -369,7 +379,7 @@
 <body>
 
 <div class="page-shell">
-<div class="hero-side"></div>
+<div class="hero-side"><img class="hero-img" src="https://raw.githubusercontent.com/deficrawler-dev/bullchat/refs/heads/main/Bullchat.png" alt="Bullchat" /></div>
 <div class="app-side">
 <div class="frame">
 
