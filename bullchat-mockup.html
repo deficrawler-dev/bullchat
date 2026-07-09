@@ -344,18 +344,26 @@
   .hero-side{
     flex:1.1;
     position:relative;
-    background:
-      radial-gradient(circle at 50% 45%, #0E2515 0%, #05070A 62%);
+    background:#05070A;
     display:flex;
     align-items:center;
     justify-content:center;
     padding:60px;
+  }
+  .hero-card{
+    width:min(440px, 88%);
+    height:min(620px, 82vh);
+    border-radius:28px;
+    background:#05100A;
+    box-shadow:0 40px 90px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.04);
     overflow:hidden;
   }
   .hero-img{
-    max-width:62%;
-    max-height:62vh;
-    object-fit:contain;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center 30%;
+    display:block;
   }
   .hero-side::after{
     content:'';
@@ -379,7 +387,7 @@
 <body>
 
 <div class="page-shell">
-<div class="hero-side"><img class="hero-img" src="https://raw.githubusercontent.com/deficrawler-dev/bullchat/refs/heads/main/Bullchat.png" alt="Bullchat" /></div>
+<div class="hero-side"><div class="hero-card"><img class="hero-img" src="https://raw.githubusercontent.com/deficrawler-dev/bullchat/refs/heads/main/Bullchat.png" alt="Bullchat" /></div></div>
 <div class="app-side">
 <div class="frame">
 
