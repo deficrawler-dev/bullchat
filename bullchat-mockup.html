@@ -47,21 +47,30 @@
     display:flex;
     flex-direction:column;
   }
+  @media (max-width:900px){
+    .frame{
+      width:100vw;
+      height:100vh;
+      height:100dvh;
+      border-radius:0;
+      border:none;
+      box-shadow:none;
+    }
+  }
   .frame::before{
     content:'';
     position:absolute; inset:0;
     background-image:var(--bg-url);
     background-size:cover;
     background-position:center;
-    opacity:0.07;
-    filter:grayscale(30%);
+    opacity:0.16;
     z-index:0;
     pointer-events:none;
   }
   .frame::after{
     content:'';
     position:absolute; inset:0;
-    background:linear-gradient(180deg, rgba(10,13,10,.4), var(--bg) 75%);
+    background:linear-gradient(180deg, rgba(10,13,10,.25), var(--bg) 85%);
     z-index:0;
     pointer-events:none;
   }
@@ -131,12 +140,12 @@
     background:radial-gradient(circle at 50% 0%, #16130A 0%, var(--bg) 55%);
   }
   .brand-mark-img{
-    width:84px;height:84px;
+    width:150px;height:150px;
     object-fit:contain;
-    margin-bottom:16px;
+    margin-bottom:6px;
   }
   .topbar-logo{
-    width:26px;height:26px;object-fit:contain;
+    width:36px;height:36px;object-fit:contain;
   }
   #signin .wordmark{font-size:34px; margin-bottom:6px;}
   #signin .tagline{font-size:14px; color:var(--text-secondary); margin-bottom:36px;}
@@ -317,18 +326,59 @@
   }
   .tab.active{color:var(--sig);}
   .tab svg{width:20px; height:20px;}
+
+  /* ---- page shell: desktop split layout ---- */
+  html, body{height:100%;}
+  body{
+    font-family:var(--font-body);
+    background:#05070A;
+    color:var(--text-primary);
+    margin:0; padding:0;
+    min-height:100vh;
+    display:block;
+  }
+  .page-shell{
+    display:flex;
+    min-height:100vh;
+  }
+  .hero-side{
+    flex:1.1;
+    position:relative;
+    background-image:url('https://raw.githubusercontent.com/deficrawler-dev/bullchat/refs/heads/main/Bullchat.png');
+    background-size:cover;
+    background-position:center;
+  }
+  .hero-side::after{
+    content:'';
+    position:absolute; inset:0;
+    background:linear-gradient(90deg, rgba(5,7,10,0) 55%, #05070A 100%);
+  }
+  .app-side{
+    flex:0 0 460px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:32px;
+  }
+  @media (max-width:900px){
+    .hero-side{display:none;}
+    .app-side{flex:1; padding:0;}
+  }
 </style>
 </head>
 <body>
 
+<div class="page-shell">
+<div class="hero-side"></div>
+<div class="app-side">
 <div class="frame">
 
   <!-- SCREEN: SIGN IN -->
   <div class="screen active" id="signin">
-    <div class="ticker" style="align-self:center; margin-bottom:22px;" id="tickerTop"></div>
     <img class="brand-mark-img" src="https://raw.githubusercontent.com/deficrawler-dev/bullchat/refs/heads/main/BullchatLogo2.png" alt="Bullchat" />
     <div class="wordmark">BULL<span>CHAT</span></div>
     <div class="tagline">the unofficial floor for ansem's people</div>
+    <div class="ticker" style="align-self:center; margin:14px 0 30px; opacity:.6;" id="tickerTop"></div>
     <div class="signin-actions">
       <button class="btn btn-primary" onclick="goTo('rooms')">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 1.5h3.7l-8 9.1L24 22.5h-7.4l-5.8-7.6-6.6 7.6H.5l8.5-9.8L0 1.5h7.6l5.2 6.9zM17.6 20.3h2L6.5 3.6h-2.1z"/></svg>
@@ -485,6 +535,8 @@
   </div>
 
   <div class="toast" id="toast">copied to clipboard</div>
+</div>
+</div>
 </div>
 
 <script>
