@@ -1,481 +1,708 @@
-# BullChat UI Guidelines
+# BullChat User Flows
 
-## Design Philosophy
+## Overview
 
-BullChat is a premium Web3 community platform.
+This document defines how users move through BullChat.
 
-It is designed for builders, traders, designers, developers, founders, and crypto communities on X.
+Every interaction should be simple, intuitive, and require as few steps as possible.
 
-The interface should feel professional, modern, calm, and intentional.
-
-Every element on the screen should have a purpose.
-
-BullChat should never feel like an AI-generated template, a meme coin website, or a cluttered social media app.
+BullChat exists to help people connect, collaborate, build, and discover opportunities within the Web3 ecosystem.
 
 ---
 
-# Design Principles
+# Authentication
 
-Prioritize:
+Users can create an account using:
 
-- Simplicity
-- Consistency
-- Readability
-- Accessibility
-- Performance
-- Usability
-
-Avoid unnecessary decorations.
-
-Avoid visual noise.
-
-Whitespace is part of the design.
+- X
+- Google
+- Anonymous
 
 ---
 
-# Theme
+# X Sign Up
 
-BullChat is Dark Mode First.
+Landing Page
 
-The UI should use deep blacks and dark grays with subtle contrast.
+↓
 
-The BullChat Green is the primary accent color and should be used sparingly.
+Continue with X
 
-The interface should feel premium rather than flashy.
+↓
 
----
+Authorize BullChat
 
-# Color Palette
+↓
 
-## Background
+Choose Username
 
-Primary
+↓
 
-#090909
+Choose Display Name
 
-Secondary
+↓
 
-#121212
+Select Country
 
-Surface
+↓
 
-#181818
+Complete Opportunity Profile (Optional)
 
-Cards
+↓
 
-#1E1E1E
-
-Borders
-
-#2A2A2A
+Enter BullChat
 
 ---
 
-## Text
+# Google Sign Up
 
-Primary
+Landing Page
 
-#FFFFFF
+↓
 
-Secondary
+Continue with Google
 
-#B3B3B3
+↓
 
-Muted
+Choose Username
 
-#7A7A7A
+↓
 
-Disabled
+Choose Display Name
 
-#5A5A5A
+↓
 
----
+Select Country
 
-## Brand Colors
+↓
 
-Primary Accent
+Complete Opportunity Profile (Optional)
 
-BullChat Green
+↓
 
-Used for:
-
-- Primary buttons
-- Active navigation
-- Active icons
-- Links
-- Focus states
-- Online indicators
-
-Do not overuse the green.
-
-It should draw attention to important actions.
+Enter BullChat
 
 ---
 
-## Status Colors
+# Anonymous Sign Up
 
-Success
+Landing Page
 
-Green
+↓
 
-Warning
+Continue Anonymously
 
-Amber
+↓
 
-Error
+BullChat generates a temporary username
 
-Red
+↓
 
-Information
+Choose Display Name
 
-Blue
+↓
 
-These colors should only communicate meaning.
+Choose Username (Optional)
 
-They should never replace the BullChat brand color.
+↓
 
----
+Select Country
 
-# Typography
+↓
 
-Use modern, clean typography.
+Recovery Passcode Generated
 
-Requirements
+↓
 
-- Easy to read
-- Good spacing
-- Consistent sizing
-- Strong hierarchy
+User confirms Recovery Passcode has been safely stored
 
-Avoid oversized headings.
+↓
 
-Avoid decorative fonts.
+Complete Opportunity Profile (Optional)
 
----
+↓
 
-# Layout
-
-Every screen should have clear spacing.
-
-Use generous padding.
-
-Keep layouts aligned.
-
-Content should never feel cramped.
-
-Desktop and mobile should share the same design language.
+Enter BullChat
 
 ---
 
-# Components
+# Recover Anonymous Account
 
-## Buttons
+Landing Page
 
-Primary
+↓
 
-- BullChat Green background
-- White text
-- Medium border radius
-- Smooth hover transition
+Recover Anonymous Account
 
-Secondary
+↓
 
-- Dark background
-- Thin border
-- Border becomes green on hover
+Enter Recovery Passcode
 
-Danger
+↓
 
-- Red
-- Confirmation required for destructive actions
+Account Restored
+
+↓
+
+Enter BullChat
 
 ---
 
-## Input Fields
+# First-Time Onboarding
 
-- Dark background
-- Subtle border
-- Green focus state
-- Rounded corners
-- No heavy shadows
+Welcome to BullChat
 
----
+↓
 
-## Cards
+Complete Profile (Optional)
 
-Cards should use:
+↓
 
-- Dark surface
-- Thin border
-- Small border radius
+Choose Skills
 
-Avoid:
+↓
 
-- Glassmorphism
-- Heavy gradients
-- Excessive shadows
+Choose "Looking For"
 
----
+↓
 
-# Navigation
+Create Professional Introduction (Optional)
 
-Desktop
+↓
 
-- Left Sidebar
-- Top Header
+Join Community
 
-Mobile
+↓
 
-- Bottom Navigation
-- Slide-out Menu where appropriate
-
-Navigation should always be simple and predictable.
+Start Exploring
 
 ---
 
-# Icons
+# Professional Introduction
 
-Use one consistent icon library throughout the app.
+Every new member is encouraged to introduce themselves.
 
-Icons should:
+Introduction includes:
 
-- Match visually
-- Be minimal
-- Never feel cartoonish
-
----
-
-# Images
-
-Profile pictures should be circular.
-
-Cover photos should have rounded corners.
-
-Images should load efficiently.
-
----
-
-# Background Images
-
-Background images should only be used where they enhance branding.
-
-Recommended:
-
-- Authentication screen
-- Landing page
-
-Do not use background images behind the main chat interface.
-
-When using background images:
-
-- Apply a strong black overlay
-- Keep opacity very low
-- Maintain excellent text readability
-
-The background should support the interface, not compete with it.
-
----
-
-# Authentication Screen
-
-Desktop
-
-Split layout
-
-Left Side
-
-- BullChat logo
-- Tagline
-- Subtle branded background
-
-Right Side
-
-Authentication Card
-
-Contains
-
-- Continue with X
-- Continue with Google
-- Continue Anonymously
-
-Mobile
-
-Centered layout
-
-- Logo
-- Tagline
-- Authentication Buttons
-
-Simple.
-
-Clean.
-
-Fast.
-
----
-
-# Chat Interface
-
-The chat experience should prioritize conversation.
-
-Avoid unnecessary visual distractions.
-
-Messages should be easy to scan.
-
-Replies should clearly reference the original message.
-
-Mentions should be highlighted.
-
----
-
-# Official BullChat Accounts
-
-Official BullChat accounts use the BullChat Mark.
-
-These include:
-
-- @bullchat
-- @deficrawler
-- @support
-- @jobs
-- @news
-- @market
-- @verify
-
-These accounts have:
-
-- Reserved usernames
-- BullChat Mark
-- Unique username colors
-- Priority in search
-
-Username Colors
-
-@bullchat
-
-BullChat Green
-
-@deficrawler
-
-Founder Gold
-
-@support
-
-Blue
-
-@jobs
-
-Orange
-
-@news
-
-Purple
-
-@market
-
-Emerald
-
-@verify
-
-Cyan
-
-Only official BullChat accounts may use custom username colors.
-
----
-
-# Animations
-
-Animations should be subtle.
-
-Prefer:
-
-- Fade
-- Scale
-- Slide
-
-Avoid:
-
-- Bounce
-- Flashy transitions
-- Long animations
-
-The interface should always feel fast.
-
----
-
-# Responsive Design
-
-BullChat is mobile-first.
-
-Every screen must work beautifully on:
-
-- Mobile
-- Tablet
-- Laptop
-- Desktop
-
-No horizontal scrolling.
-
-Touch targets must be large enough for comfortable use.
-
----
-
-# Accessibility
-
-Maintain strong color contrast.
-
-Support keyboard navigation.
-
-Use meaningful labels.
-
-Do not rely on color alone to communicate information.
-
----
-
-# Empty States
-
-Every empty screen should guide the user toward the next action.
-
-Avoid blank pages.
+- Who they are
+- What they do
+- What they're building
+- What they're looking for
 
 Example
 
-"No messages yet."
+Hi everyone!
 
-Start the conversation.
+I'm a UI/UX designer from Nigeria looking to collaborate with Web3 startups and contribute to exciting products.
+
+Users may:
+
+- Post Introduction
+- Skip for Now
+
+Introductions are posted in the official **Introductions** room.
+
+Users can edit their introduction at any time.
 
 ---
 
-# Loading States
+# Opportunity Profile
 
-Use skeleton loaders whenever possible.
+Every user has an Opportunity Profile.
 
-Avoid large loading spinners.
+The profile helps others quickly understand:
 
-The interface should always feel responsive.
+- Skills
+- Experience
+- Interests
+- Availability
+- Collaboration goals
+
+Example sections
+
+- Skills
+- Looking For
+- Available For
+- Portfolio
+- Wallet
+- Social Links
+
+---
+
+# Looking For
+
+Users may choose one or more.
+
+Examples
+
+- Collaborators
+- Freelance Work
+- Full-time Opportunities
+- Learning
+- Investors
+- Co-founders
+- Networking
+- Design Feedback
+- Mentorship
+
+These appear on the user's profile.
+
+---
+
+# Open Status
+
+Users can control their availability.
+
+Examples
+
+🟢 Open to Work
+
+🤝 Open to Collaborate
+
+🔴 Not Currently Available
+
+Recruiters and founders can filter users based on these statuses.
+
+---
+
+# Edit Profile
+
+Users can edit
+
+- Display Name
+- Username (every 30 days)
+- Avatar
+- Cover Image
+- Bio
+- Country
+- Wallet
+- X
+- Telegram
+- Discord
+- Dribbble
+- GitHub
+- Portfolio Website
+- Skills
+- Looking For
+- Availability
+
+↓
+
+Save Changes
+
+---
+
+# Follow User
+
+Visit Profile
+
+↓
+
+Follow
+
+↓
+
+User receives notification
+
+↓
+
+Profile added to Following
+
+---
+
+# Unfollow User
+
+Visit Profile
+
+↓
+
+Unfollow
+
+↓
+
+Relationship removed
+
+---
+
+# Block User
+
+Visit Profile
+
+↓
+
+Block User
+
+↓
+
+Confirmation
+
+↓
+
+User blocked
+
+Blocked users cannot
+
+- Follow
+- Send DMs
+- Mention
+- Interact directly
+
+---
+
+# Community Rooms
+
+Open Sidebar
+
+↓
+
+Select Room
+
+↓
+
+Read Messages
+
+↓
+
+Join Conversation
+
+↓
+
+Send Message
+
+---
+
+# Send Message
+
+Open Room
+
+↓
+
+Write Message
+
+↓
+
+Send
+
+↓
+
+Message appears instantly
+
+---
+
+# Reply to Message
+
+Hover Message (Desktop)
+
+OR
+
+Long Press (Mobile)
+
+↓
+
+Reply
+
+↓
+
+Reply Preview appears
+
+↓
+
+Write Reply
+
+↓
+
+Send
+
+↓
+
+Reply links to original message
+
+Clicking the quoted message scrolls to the original message.
+
+---
+
+# Mention User
+
+Type
+
+@username
+
+↓
+
+Suggestions appear
+
+↓
+
+Select User
+
+↓
+
+Send Message
+
+↓
+
+Mentioned user receives notification
+
+---
+
+# React to Message
+
+Hover Message
+
+↓
+
+Choose Reaction
+
+↓
+
+Reaction count updates instantly
+
+---
+
+# Direct Messages
+
+Visit User Profile
+
+↓
+
+Message
+
+↓
+
+Conversation Opens
+
+↓
+
+Send Message
+
+Supports
+
+- Replies
+- Reactions
+
+---
+
+# Search
+
+Users can search for
+
+- People
+- Rooms
+- Jobs
+
+Search results should be fast and relevant.
+
+---
+
+# Opportunity Feed
+
+Users can browse community opportunities.
+
+Examples
+
+- Looking for a Frontend Developer
+- Need a Whitepaper Writer
+- Hiring a Moderator
+- Looking for a UI Designer
+- Seeking a Co-founder
+
+Users may
+
+- Reply
+- Apply
+- Contact Poster
+- Share
+
+The Opportunity Feed focuses on collaboration and career growth rather than social posting.
+
+---
+
+# Jobs
+
+Create Job
+
+↓
+
+Enter
+
+- Title
+- Description
+- Category
+- Budget
+- Deadline
+
+↓
+
+Publish
+
+Users can browse jobs using filters.
+
+---
+
+# Market Hub
+
+Open Market Hub
+
+↓
+
+Select Token
+
+↓
+
+View
+
+- Price
+- Chart
+- Market Cap
+- Liquidity
+- Holders
+- Volume
+
+Version 1 launches with
+
+$ANSEM
+
+Future versions support additional tokens.
 
 ---
 
 # Notifications
 
-Notifications should be noticeable without being distracting.
+Users receive notifications for
 
-Users should always understand why they received a notification.
+- New Followers
+- Mentions
+- Replies
+- Direct Messages
+- Job Matches
+- Opportunity Matches
+- Official BullChat Announcements
 
 ---
 
-# Overall Experience
+# Settings
 
-BullChat should feel like software built by a professional product team.
+Users manage
 
-The experience should be:
+- Account
+- Privacy
+- Notifications
+- Connected Accounts
+- Blocked Users
+- Username
+- Appearance
 
-- Fast
-- Minimal
-- Elegant
-- Community-first
-- Consistent
+---
 
-Every design decision should reinforce one goal:
+# Logout
 
-Help people connect, collaborate, and build.
+Settings
+
+↓
+
+Logout
+
+↓
+
+Return to Authentication Screen
+
+---
+
+# Delete Account
+
+Settings
+
+↓
+
+Delete Account
+
+↓
+
+Confirmation
+
+↓
+
+Account Deleted
+
+---
+
+# Upgrade Anonymous Account
+
+Settings
+
+↓
+
+Connect X or Google
+
+↓
+
+Authenticate
+
+↓
+
+Anonymous account becomes a standard account
+
+All data is preserved.
+
+---
+
+# Core User Journey
+
+Discover BullChat
+
+↓
+
+Create Account
+
+↓
+
+Create Opportunity Profile
+
+↓
+
+Introduce Yourself
+
+↓
+
+Join Community
+
+↓
+
+Start Conversations
+
+↓
+
+Meet People
+
+↓
+
+Follow Members
+
+↓
+
+Discover Opportunities
+
+↓
+
+Collaborate
+
+↓
+
+Build Reputation
+
+↓
+
+Grow Your Career
+
+---
+
+# BullChat Philosophy
+
+Every user journey should help people:
+
+- Connect
+- Collaborate
+- Build
+- Discover Opportunities
+
+Every new feature should support at least one of these four pillars.
