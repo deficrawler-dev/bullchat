@@ -38,8 +38,7 @@ Connect. Collaborate. Build.
 
 # Mission
 
-To become the home of Crypto Twitter communities by helping people connect, collaborate, discover opportunities, and build meaningful careers in Web3.
-
+To become the home of Web3 communities on X by helping people connect, collaborate, discover opportunities, and build meaningful careers in crypto.
 ---
 
 # Launch Strategy
@@ -52,7 +51,7 @@ Every feature should improve the experience for Ansem's followers and make BullC
 
 ## Phase 2
 
-Expand to the wider Crypto Twitter (CT) community while maintaining the same community-first philosophy.
+Expand to the broader crypto community on X while maintaining the same community-first philosophy.
 
 ## Phase 3
 
@@ -65,8 +64,8 @@ Allow other creators, founders, and Web3 communities to establish their own spac
 ## Primary Audience
 
 - Ansem followers
-- Crypto Twitter users
-- Active Web3 community members
+- Active users on X
+- Crypto communities on X
 
 ## Secondary Audience
 
