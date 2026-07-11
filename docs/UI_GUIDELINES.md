@@ -2,51 +2,82 @@
 
 ## Overview
 
-BullChat is a professional Web3 community platform.
+BullChat is a premium Web3 community platform built for builders.
 
-The interface should feel modern, premium, clean, and trustworthy.
+It is designed to help developers, designers, founders, creators, researchers, marketers, and investors connect, collaborate, build, and discover opportunities.
 
-Every screen should prioritize clarity over decoration.
+BullChat is not a chat application with community features.
 
-Users should immediately feel they are entering a place built for serious builders, founders, developers, designers, creators, and professionals.
+BullChat is a professional community platform where meaningful conversations lead to real opportunities.
 
-BullChat is NOT:
+The interface should always communicate:
 
-- Discord
-- Telegram
-- Slack
-- Twitter/X
-- Reddit
+- Professionalism
+- Simplicity
+- Speed
+- Trust
+- Quality
 
-BullChat has its own identity.
+Every UI decision should support these principles.
 
 ---
 
 # Design Philosophy
 
-Every screen should communicate:
+BullChat should feel like a product people can trust.
 
-Professionalism
+Users should immediately feel they are entering a serious professional community.
 
-↓
+The interface should never compete with the content.
 
-Simplicity
-
-↓
-
-Speed
-
-↓
-
-Trust
-
-↓
-
-Community
-
-The interface should never feel noisy or overwhelming.
+Content always comes first.
 
 Whitespace is a feature.
+
+Visual hierarchy should guide the user naturally.
+
+---
+
+# Brand Identity
+
+BullChat's visual identity is built around the Bull logo.
+
+The Bull represents:
+
+- Growth
+- Strength
+- Confidence
+- Opportunity
+- Community
+
+The speech bubble represents conversation.
+
+Together they represent meaningful conversations that create opportunities.
+
+The logo is the strongest visual element of the brand.
+
+The interface should complement the logo rather than compete with it.
+
+---
+
+# Design Inspiration
+
+BullChat should feel similar to the quality of:
+
+- GitHub
+- Linear
+- Notion
+- Vercel
+- Stripe Dashboard
+
+NOT
+
+- Discord
+- Telegram
+- Slack
+- Reddit
+- Gaming dashboards
+- Meme coin websites
 
 ---
 
@@ -54,93 +85,75 @@ Whitespace is a feature.
 
 ## Mobile First
 
-Every page must be designed for mobile first.
+Every screen must be designed for mobile before desktop.
 
-Desktop layouts expand naturally from mobile.
+Desktop expands naturally from mobile.
 
-Never build desktop first.
-
----
-
-## Simplicity Over Decoration
-
-Avoid unnecessary graphics.
-
-Avoid decorative elements that do not improve usability.
-
-Every component should have a purpose.
+Never sacrifice mobile usability.
 
 ---
 
 ## Content First
 
-Content should always receive the highest visual priority.
+Messages.
 
-Users come for conversations, opportunities, and collaboration.
+Profiles.
 
-Not visual effects.
+Opportunities.
+
+Community.
+
+These are the product.
+
+Animations and decorative elements are not.
+
+---
+
+## Simplicity
+
+Every screen should contain only what users need.
+
+Avoid unnecessary decoration.
+
+Avoid unnecessary clicks.
+
+Avoid unnecessary complexity.
 
 ---
 
 ## Consistency
 
-Buttons behave the same everywhere.
+Buttons behave consistently.
 
-Cards behave the same everywhere.
+Cards behave consistently.
 
-Inputs behave the same everywhere.
+Inputs behave consistently.
 
 Spacing remains consistent.
 
 Typography remains consistent.
 
+Navigation remains predictable.
+
 ---
 
 ## Accessibility
 
-Every component must support:
+Every interface must support:
 
 Keyboard navigation
 
 Screen readers
 
-Focus states
+Visible focus states
 
-Sufficient contrast
+High contrast
 
 Large tap targets
 
-Readable typography
+Semantic HTML
 
----
-
-# Visual Identity
-
-BullChat should feel like:
-
-GitHub
-
-+
-
-Linear
-
-+
-
-Notion
-
-+
-
-Modern Web3
-
-NOT
-
-Gaming
-
-Cyberpunk
-
-Neon
-
-Meme Coin
+Accessible forms
 
 ---
 
@@ -150,13 +163,33 @@ Dark Mode First
 
 Light Mode Supported
 
-Dark mode should be the default.
+Dark mode is the default experience.
 
 ---
 
-# Color Palette
+# Brand Colors
 
-## Background
+## Primary Brand
+
+BullChat Green
+
+#76E51D
+
+Hover
+
+#67D116
+
+Pressed
+
+#56B311
+
+The brand color should be used sparingly.
+
+Never flood the interface with green.
+
+---
+
+# Background Colors
 
 Primary
 
@@ -164,7 +197,7 @@ Primary
 
 Secondary
 
-#111827
+#121821
 
 Surface
 
@@ -180,7 +213,7 @@ Border
 
 ---
 
-## Text
+# Typography Colors
 
 Primary
 
@@ -200,43 +233,51 @@ Disabled
 
 ---
 
-## Brand
+# Semantic Colors
 
-Primary Accent
-
-#3B82F6
-
-Hover
-
-#2563EB
-
-Pressed
-
-#1D4ED8
-
----
-
-## Success
+Success
 
 #22C55E
 
----
-
-## Warning
+Warning
 
 #F59E0B
 
----
-
-## Error
+Error
 
 #EF4444
 
----
-
-## Info
+Information
 
 #38BDF8
+
+---
+
+# Color Usage Rules
+
+The UI should remain approximately:
+
+90–95% neutral
+
+5–10% brand color
+
+Green should only appear on:
+
+Primary buttons
+
+Links
+
+Active navigation
+
+Selected states
+
+Focus rings
+
+Progress indicators
+
+Interactive highlights
+
+Never use green as large background sections.
 
 ---
 
@@ -252,7 +293,7 @@ system-ui
 
 ---
 
-## Heading Sizes
+## Font Sizes
 
 H1
 
@@ -270,27 +311,21 @@ H4
 
 20px
 
----
-
-## Body
+Body
 
 16px
 
----
-
-## Small
+Small
 
 14px
 
----
-
-## Caption
+Caption
 
 12px
 
 ---
 
-Font Weight
+## Font Weights
 
 Regular
 
@@ -304,39 +339,25 @@ Avoid Extra Bold.
 
 ---
 
-# Border Radius
+# Layout
 
-Cards
+Maximum Width
 
-16px
+1280px
 
-Buttons
+Centered Layout
 
-12px
+Consistent spacing
 
-Inputs
+Responsive design
 
-12px
-
-Small Chips
-
-999px
+No horizontal scrolling
 
 ---
 
-# Shadows
+# Spacing System
 
-Use subtle shadows only.
-
-Never dramatic shadows.
-
-Cards should feel elevated without floating.
-
----
-
-# Spacing
-
-Use an 8-point spacing system.
+Use an 8-point grid.
 
 4
 
@@ -356,87 +377,119 @@ Use an 8-point spacing system.
 
 64
 
-Never use random spacing values.
+Never use arbitrary spacing.
 
 ---
 
-# Layout
+# Border Radius
 
-Maximum Content Width
+Cards
 
-1280px
+16px
 
-Centered
+Buttons
 
-Responsive
+12px
 
-Consistent padding
+Inputs
+
+12px
+
+Avatars
+
+50%
+
+Tags
+
+999px
+
+---
+
+# Shadows
+
+Use subtle shadows only.
+
+Components should feel elevated without floating.
+
+Avoid dramatic shadows.
+
+---
+
+# Icons
+
+Use Lucide React.
+
+Outline icons only.
+
+Maintain consistent stroke width.
+
+Avoid filled icons unless absolutely necessary.
 
 ---
 
 # Navigation
 
-Bottom Navigation on Mobile
+Mobile
 
-Sidebar on Desktop
+Bottom Navigation
 
-Navigation should never exceed 5 primary destinations.
+Desktop
+
+Left Sidebar
+
+Maximum of five primary destinations.
+
+Navigation should always remain simple.
 
 ---
 
-# Components
+# Buttons
 
-## Buttons
+Supported Variants
 
 Primary
 
-Filled
-
-Accent color
-
 Secondary
-
-Outlined
 
 Ghost
 
-Transparent
-
 Danger
 
-Red
-
-Buttons should have:
+Every button supports:
 
 Hover
 
-Focus
-
 Pressed
 
-Disabled
+Focused
 
 Loading
 
----
+Disabled
 
-## Inputs
-
-Rounded corners
-
-Visible labels
-
-Helpful placeholders
-
-Validation messages
-
-Icons optional
+Loading buttons display a spinner beside the label.
 
 ---
 
-## Cards
+# Inputs
 
-Cards contain:
+Rounded corners.
+
+Visible labels.
+
+Helpful placeholders.
+
+Clear validation messages.
+
+Consistent spacing.
+
+Optional icons.
+
+---
+
+# Cards
+
+Cards should contain:
 
 Header
 
@@ -444,31 +497,37 @@ Content
 
 Optional footer
 
-Cards should never appear crowded.
+Cards should never feel crowded.
+
+Maintain generous padding.
 
 ---
 
-## Avatars
+# Avatars
 
-Rounded
+Rounded.
 
-Fallback initials
+Fallback initials.
 
-Support image upload
+Support uploads.
 
-Online indicator
+Online indicator.
+
+Verification badge support.
 
 ---
 
-## Badges
+# Badges
 
-Verification
+Supported badges:
+
+Official
 
 Founder
 
 Moderator
 
-Official
+Verified
 
 Contributor
 
@@ -476,9 +535,11 @@ Anonymous
 
 Badges should remain subtle.
 
+Never oversized.
+
 ---
 
-## Tags
+# Tags
 
 Skills
 
@@ -488,111 +549,13 @@ Looking For
 
 Technologies
 
-Compact pill style.
-
----
-
-# Icons
-
-Use Lucide React.
-
-Avoid filled icon sets.
-
-Consistent stroke width.
-
----
-
-# Animations
-
-Animations should feel natural.
-
-Duration
-
-150–250ms
-
-Use:
-
-Fade
-
-Scale
-
-Slide
-
-Avoid:
-
-Bounce
-
-Spin
-
-Flash
-
-Large transitions
-
-Animation should never distract.
-
----
-
-# Loading States
-
-Use Skeleton UI.
-
-Avoid spinners whenever possible.
-
----
-
-# Empty States
-
-Every empty screen should explain:
-
-Why it is empty
-
-How to get started
-
-Primary action
-
-Example
-
-"No conversations yet.
-
-Start by introducing yourself."
-
----
-
-# Error States
-
-Friendly
-
-Actionable
-
-Never expose technical errors.
-
-Good
-
-"Unable to load messages.
-
-Try again."
-
-Bad
-
-"500 Internal Server Error"
-
----
-
-# Notifications
-
-Minimal
-
-Dismissible
-
-Non-blocking
-
-Never interrupt the user.
+Small pill components.
 
 ---
 
 # Chat Experience
 
-Messages should feel lightweight.
+Messages should be lightweight.
 
 Compact spacing.
 
@@ -602,35 +565,17 @@ Fast rendering.
 
 Replies remain visually connected.
 
-Mentions highlighted subtly.
+Mentions receive subtle highlights.
 
 Reaction pills remain small.
 
----
-
-# Opportunity Feed
-
-Cards should prioritize:
-
-Title
-
-Category
-
-Budget
-
-Deadline
-
-Poster
-
-CTA
-
-No unnecessary decoration.
+Pinned messages remain clearly distinguishable.
 
 ---
 
 # Profile Pages
 
-Order
+Profile layout order:
 
 Avatar
 
@@ -639,6 +584,8 @@ Cover
 Display Name
 
 Username
+
+Verification
 
 Status
 
@@ -652,15 +599,37 @@ Availability
 
 Portfolio
 
+Wallet
+
 Social Links
 
-Activity
+Recent Activity
+
+---
+
+# Opportunity Feed
+
+Cards prioritize:
+
+Title
+
+Category
+
+Budget
+
+Deadline
+
+Poster
+
+Primary Action
+
+The feed should focus on opportunity rather than social engagement.
 
 ---
 
 # Market Hub
 
-Clean financial dashboard.
+The Market Hub should feel like a professional financial dashboard.
 
 Focus on:
 
@@ -674,13 +643,125 @@ Market Cap
 
 Volume
 
-Avoid flashy trading interfaces.
+Holders
+
+Avoid trading terminal aesthetics.
 
 ---
 
-# Responsiveness
+# Loading States
 
-Support:
+Use Skeleton components.
+
+Avoid loading spinners whenever possible.
+
+Skeletons should resemble actual content.
+
+---
+
+# Empty States
+
+Every empty screen should explain:
+
+Why the page is empty.
+
+How users can populate it.
+
+Primary action.
+
+Example
+
+"No conversations yet.
+
+Start by introducing yourself."
+
+---
+
+# Error States
+
+Errors should be:
+
+Friendly
+
+Simple
+
+Actionable
+
+Never expose technical messages.
+
+Good
+
+"Unable to load messages.
+
+Please try again."
+
+Bad
+
+"500 Internal Server Error"
+
+---
+
+# Notifications
+
+Small.
+
+Minimal.
+
+Dismissible.
+
+Non-blocking.
+
+Never interrupt the user's workflow.
+
+---
+
+# Animations
+
+Animation duration:
+
+150–250ms
+
+Allowed animations:
+
+Fade
+
+Scale
+
+Slide
+
+Opacity
+
+Forbidden:
+
+Bounce
+
+Flash
+
+Spin
+
+Elastic
+
+Large transitions
+
+Animations should enhance usability—not entertainment.
+
+---
+
+# Performance
+
+Lazy load images.
+
+Virtualize long lists.
+
+Optimize bundle size.
+
+Avoid unnecessary re-renders.
+
+Target 60fps animations.
+
+---
+
+# Responsive Breakpoints
 
 320px
 
@@ -694,23 +775,11 @@ Support:
 
 1024px
 
+1280px
+
 1440px
 
-No horizontal scrolling.
-
----
-
-# Performance
-
-Lazy load images.
-
-Virtualize long lists.
-
-Optimize bundle size.
-
-Minimize re-renders.
-
-Animations must remain 60fps.
+Every screen must function correctly across all supported sizes.
 
 ---
 
@@ -722,24 +791,41 @@ Never use glassmorphism.
 
 Never use neon colors.
 
-Never use excessive animations.
-
-Never clutter screens.
-
-Never sacrifice readability.
+Never clutter interfaces.
 
 Never prioritize aesthetics over usability.
 
+Never redesign completed pages unless requested.
+
+Never introduce inconsistent spacing.
+
+Never use multiple button styles for identical actions.
+
+Always build reusable components.
+
+Always maintain visual consistency.
+
 ---
 
-# Overall Feeling
+# Overall Experience
 
-When someone opens BullChat, they should think:
+When users open BullChat, they should immediately feel:
 
-"This feels like where serious Web3 builders belong."
+"This is where serious Web3 builders connect."
 
-Not:
+The interface should inspire confidence.
 
-"This looks like another Discord clone."
+The product should feel calm.
 
-Every interface decision should reinforce professionalism, collaboration, trust, and opportunity.
+Professional.
+
+Fast.
+
+Reliable.
+
+Every design decision should reinforce BullChat's four pillars:
+
+- Connect
+- Collaborate
+- Build
+- Discover Opportunities
