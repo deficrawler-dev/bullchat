@@ -1,708 +1,745 @@
-# BullChat User Flows
+# BullChat UI Guidelines
 
 ## Overview
 
-This document defines how users move through BullChat.
+BullChat is a professional Web3 community platform.
 
-Every interaction should be simple, intuitive, and require as few steps as possible.
+The interface should feel modern, premium, clean, and trustworthy.
 
-BullChat exists to help people connect, collaborate, build, and discover opportunities within the Web3 ecosystem.
+Every screen should prioritize clarity over decoration.
 
----
+Users should immediately feel they are entering a place built for serious builders, founders, developers, designers, creators, and professionals.
 
-# Authentication
+BullChat is NOT:
 
-Users can create an account using:
+- Discord
+- Telegram
+- Slack
+- Twitter/X
+- Reddit
 
-- X
-- Google
-- Anonymous
-
----
-
-# X Sign Up
-
-Landing Page
-
-↓
-
-Continue with X
-
-↓
-
-Authorize BullChat
-
-↓
-
-Choose Username
-
-↓
-
-Choose Display Name
-
-↓
-
-Select Country
-
-↓
-
-Complete Opportunity Profile (Optional)
-
-↓
-
-Enter BullChat
+BullChat has its own identity.
 
 ---
 
-# Google Sign Up
+# Design Philosophy
 
-Landing Page
+Every screen should communicate:
 
-↓
-
-Continue with Google
+Professionalism
 
 ↓
 
-Choose Username
+Simplicity
 
 ↓
 
-Choose Display Name
+Speed
 
 ↓
 
-Select Country
+Trust
 
 ↓
 
-Complete Opportunity Profile (Optional)
+Community
 
-↓
+The interface should never feel noisy or overwhelming.
 
-Enter BullChat
+Whitespace is a feature.
 
 ---
 
-# Anonymous Sign Up
+# Core Design Principles
 
-Landing Page
+## Mobile First
 
-↓
+Every page must be designed for mobile first.
 
-Continue Anonymously
+Desktop layouts expand naturally from mobile.
 
-↓
-
-BullChat generates a temporary username
-
-↓
-
-Choose Display Name
-
-↓
-
-Choose Username (Optional)
-
-↓
-
-Select Country
-
-↓
-
-Recovery Passcode Generated
-
-↓
-
-User confirms Recovery Passcode has been safely stored
-
-↓
-
-Complete Opportunity Profile (Optional)
-
-↓
-
-Enter BullChat
+Never build desktop first.
 
 ---
 
-# Recover Anonymous Account
+## Simplicity Over Decoration
 
-Landing Page
+Avoid unnecessary graphics.
 
-↓
+Avoid decorative elements that do not improve usability.
 
-Recover Anonymous Account
-
-↓
-
-Enter Recovery Passcode
-
-↓
-
-Account Restored
-
-↓
-
-Enter BullChat
+Every component should have a purpose.
 
 ---
 
-# First-Time Onboarding
+## Content First
 
-Welcome to BullChat
+Content should always receive the highest visual priority.
 
-↓
+Users come for conversations, opportunities, and collaboration.
 
-Complete Profile (Optional)
-
-↓
-
-Choose Skills
-
-↓
-
-Choose "Looking For"
-
-↓
-
-Create Professional Introduction (Optional)
-
-↓
-
-Join Community
-
-↓
-
-Start Exploring
+Not visual effects.
 
 ---
 
-# Professional Introduction
+## Consistency
 
-Every new member is encouraged to introduce themselves.
+Buttons behave the same everywhere.
 
-Introduction includes:
+Cards behave the same everywhere.
 
-- Who they are
-- What they do
-- What they're building
-- What they're looking for
+Inputs behave the same everywhere.
+
+Spacing remains consistent.
+
+Typography remains consistent.
+
+---
+
+## Accessibility
+
+Every component must support:
+
+Keyboard navigation
+
+Screen readers
+
+Focus states
+
+Sufficient contrast
+
+Large tap targets
+
+Readable typography
+
+---
+
+# Visual Identity
+
+BullChat should feel like:
+
+GitHub
+
++
+
+Linear
+
++
+
+Notion
+
++
+
+Modern Web3
+
+NOT
+
+Gaming
+
+Cyberpunk
+
+Neon
+
+Meme Coin
+
+---
+
+# Theme
+
+Dark Mode First
+
+Light Mode Supported
+
+Dark mode should be the default.
+
+---
+
+# Color Palette
+
+## Background
+
+Primary
+
+#0B0F14
+
+Secondary
+
+#111827
+
+Surface
+
+#1A2332
+
+Card
+
+#202938
+
+Border
+
+#2B3648
+
+---
+
+## Text
+
+Primary
+
+#FFFFFF
+
+Secondary
+
+#B8C1CC
+
+Muted
+
+#8A94A6
+
+Disabled
+
+#5E6778
+
+---
+
+## Brand
+
+Primary Accent
+
+#3B82F6
+
+Hover
+
+#2563EB
+
+Pressed
+
+#1D4ED8
+
+---
+
+## Success
+
+#22C55E
+
+---
+
+## Warning
+
+#F59E0B
+
+---
+
+## Error
+
+#EF4444
+
+---
+
+## Info
+
+#38BDF8
+
+---
+
+# Typography
+
+Primary Font
+
+Inter
+
+Fallback
+
+system-ui
+
+---
+
+## Heading Sizes
+
+H1
+
+36px
+
+H2
+
+30px
+
+H3
+
+24px
+
+H4
+
+20px
+
+---
+
+## Body
+
+16px
+
+---
+
+## Small
+
+14px
+
+---
+
+## Caption
+
+12px
+
+---
+
+Font Weight
+
+Regular
+
+Medium
+
+Semibold
+
+Bold
+
+Avoid Extra Bold.
+
+---
+
+# Border Radius
+
+Cards
+
+16px
+
+Buttons
+
+12px
+
+Inputs
+
+12px
+
+Small Chips
+
+999px
+
+---
+
+# Shadows
+
+Use subtle shadows only.
+
+Never dramatic shadows.
+
+Cards should feel elevated without floating.
+
+---
+
+# Spacing
+
+Use an 8-point spacing system.
+
+4
+
+8
+
+12
+
+16
+
+24
+
+32
+
+40
+
+48
+
+64
+
+Never use random spacing values.
+
+---
+
+# Layout
+
+Maximum Content Width
+
+1280px
+
+Centered
+
+Responsive
+
+Consistent padding
+
+---
+
+# Navigation
+
+Bottom Navigation on Mobile
+
+Sidebar on Desktop
+
+Navigation should never exceed 5 primary destinations.
+
+---
+
+# Components
+
+## Buttons
+
+Primary
+
+Filled
+
+Accent color
+
+Secondary
+
+Outlined
+
+Ghost
+
+Transparent
+
+Danger
+
+Red
+
+Buttons should have:
+
+Hover
+
+Focus
+
+Pressed
+
+Disabled
+
+Loading
+
+---
+
+## Inputs
+
+Rounded corners
+
+Visible labels
+
+Helpful placeholders
+
+Validation messages
+
+Icons optional
+
+---
+
+## Cards
+
+Cards contain:
+
+Header
+
+Content
+
+Optional footer
+
+Cards should never appear crowded.
+
+---
+
+## Avatars
+
+Rounded
+
+Fallback initials
+
+Support image upload
+
+Online indicator
+
+---
+
+## Badges
+
+Verification
+
+Founder
+
+Moderator
+
+Official
+
+Contributor
+
+Anonymous
+
+Badges should remain subtle.
+
+---
+
+## Tags
+
+Skills
+
+Availability
+
+Looking For
+
+Technologies
+
+Compact pill style.
+
+---
+
+# Icons
+
+Use Lucide React.
+
+Avoid filled icon sets.
+
+Consistent stroke width.
+
+---
+
+# Animations
+
+Animations should feel natural.
+
+Duration
+
+150–250ms
+
+Use:
+
+Fade
+
+Scale
+
+Slide
+
+Avoid:
+
+Bounce
+
+Spin
+
+Flash
+
+Large transitions
+
+Animation should never distract.
+
+---
+
+# Loading States
+
+Use Skeleton UI.
+
+Avoid spinners whenever possible.
+
+---
+
+# Empty States
+
+Every empty screen should explain:
+
+Why it is empty
+
+How to get started
+
+Primary action
 
 Example
 
-Hi everyone!
+"No conversations yet.
 
-I'm a UI/UX designer from Nigeria looking to collaborate with Web3 startups and contribute to exciting products.
-
-Users may:
-
-- Post Introduction
-- Skip for Now
-
-Introductions are posted in the official **Introductions** room.
-
-Users can edit their introduction at any time.
+Start by introducing yourself."
 
 ---
 
-# Opportunity Profile
+# Error States
 
-Every user has an Opportunity Profile.
+Friendly
 
-The profile helps others quickly understand:
+Actionable
 
-- Skills
-- Experience
-- Interests
-- Availability
-- Collaboration goals
+Never expose technical errors.
 
-Example sections
+Good
 
-- Skills
-- Looking For
-- Available For
-- Portfolio
-- Wallet
-- Social Links
+"Unable to load messages.
 
----
+Try again."
 
-# Looking For
+Bad
 
-Users may choose one or more.
-
-Examples
-
-- Collaborators
-- Freelance Work
-- Full-time Opportunities
-- Learning
-- Investors
-- Co-founders
-- Networking
-- Design Feedback
-- Mentorship
-
-These appear on the user's profile.
-
----
-
-# Open Status
-
-Users can control their availability.
-
-Examples
-
-🟢 Open to Work
-
-🤝 Open to Collaborate
-
-🔴 Not Currently Available
-
-Recruiters and founders can filter users based on these statuses.
-
----
-
-# Edit Profile
-
-Users can edit
-
-- Display Name
-- Username (every 30 days)
-- Avatar
-- Cover Image
-- Bio
-- Country
-- Wallet
-- X
-- Telegram
-- Discord
-- Dribbble
-- GitHub
-- Portfolio Website
-- Skills
-- Looking For
-- Availability
-
-↓
-
-Save Changes
-
----
-
-# Follow User
-
-Visit Profile
-
-↓
-
-Follow
-
-↓
-
-User receives notification
-
-↓
-
-Profile added to Following
-
----
-
-# Unfollow User
-
-Visit Profile
-
-↓
-
-Unfollow
-
-↓
-
-Relationship removed
-
----
-
-# Block User
-
-Visit Profile
-
-↓
-
-Block User
-
-↓
-
-Confirmation
-
-↓
-
-User blocked
-
-Blocked users cannot
-
-- Follow
-- Send DMs
-- Mention
-- Interact directly
-
----
-
-# Community Rooms
-
-Open Sidebar
-
-↓
-
-Select Room
-
-↓
-
-Read Messages
-
-↓
-
-Join Conversation
-
-↓
-
-Send Message
-
----
-
-# Send Message
-
-Open Room
-
-↓
-
-Write Message
-
-↓
-
-Send
-
-↓
-
-Message appears instantly
-
----
-
-# Reply to Message
-
-Hover Message (Desktop)
-
-OR
-
-Long Press (Mobile)
-
-↓
-
-Reply
-
-↓
-
-Reply Preview appears
-
-↓
-
-Write Reply
-
-↓
-
-Send
-
-↓
-
-Reply links to original message
-
-Clicking the quoted message scrolls to the original message.
-
----
-
-# Mention User
-
-Type
-
-@username
-
-↓
-
-Suggestions appear
-
-↓
-
-Select User
-
-↓
-
-Send Message
-
-↓
-
-Mentioned user receives notification
-
----
-
-# React to Message
-
-Hover Message
-
-↓
-
-Choose Reaction
-
-↓
-
-Reaction count updates instantly
-
----
-
-# Direct Messages
-
-Visit User Profile
-
-↓
-
-Message
-
-↓
-
-Conversation Opens
-
-↓
-
-Send Message
-
-Supports
-
-- Replies
-- Reactions
-
----
-
-# Search
-
-Users can search for
-
-- People
-- Rooms
-- Jobs
-
-Search results should be fast and relevant.
-
----
-
-# Opportunity Feed
-
-Users can browse community opportunities.
-
-Examples
-
-- Looking for a Frontend Developer
-- Need a Whitepaper Writer
-- Hiring a Moderator
-- Looking for a UI Designer
-- Seeking a Co-founder
-
-Users may
-
-- Reply
-- Apply
-- Contact Poster
-- Share
-
-The Opportunity Feed focuses on collaboration and career growth rather than social posting.
-
----
-
-# Jobs
-
-Create Job
-
-↓
-
-Enter
-
-- Title
-- Description
-- Category
-- Budget
-- Deadline
-
-↓
-
-Publish
-
-Users can browse jobs using filters.
-
----
-
-# Market Hub
-
-Open Market Hub
-
-↓
-
-Select Token
-
-↓
-
-View
-
-- Price
-- Chart
-- Market Cap
-- Liquidity
-- Holders
-- Volume
-
-Version 1 launches with
-
-$ANSEM
-
-Future versions support additional tokens.
+"500 Internal Server Error"
 
 ---
 
 # Notifications
 
-Users receive notifications for
+Minimal
 
-- New Followers
-- Mentions
-- Replies
-- Direct Messages
-- Job Matches
-- Opportunity Matches
-- Official BullChat Announcements
+Dismissible
+
+Non-blocking
+
+Never interrupt the user.
 
 ---
 
-# Settings
+# Chat Experience
 
-Users manage
+Messages should feel lightweight.
 
-- Account
-- Privacy
-- Notifications
-- Connected Accounts
-- Blocked Users
-- Username
-- Appearance
+Compact spacing.
 
----
+Easy to scan.
 
-# Logout
+Fast rendering.
 
-Settings
+Replies remain visually connected.
 
-↓
+Mentions highlighted subtly.
 
-Logout
-
-↓
-
-Return to Authentication Screen
+Reaction pills remain small.
 
 ---
 
-# Delete Account
+# Opportunity Feed
 
-Settings
+Cards should prioritize:
 
-↓
+Title
 
-Delete Account
+Category
 
-↓
+Budget
 
-Confirmation
+Deadline
 
-↓
+Poster
 
-Account Deleted
+CTA
 
----
-
-# Upgrade Anonymous Account
-
-Settings
-
-↓
-
-Connect X or Google
-
-↓
-
-Authenticate
-
-↓
-
-Anonymous account becomes a standard account
-
-All data is preserved.
+No unnecessary decoration.
 
 ---
 
-# Core User Journey
+# Profile Pages
 
-Discover BullChat
+Order
 
-↓
+Avatar
 
-Create Account
+Cover
 
-↓
+Display Name
 
-Create Opportunity Profile
+Username
 
-↓
+Status
 
-Introduce Yourself
+Bio
 
-↓
+Skills
 
-Join Community
+Looking For
 
-↓
+Availability
 
-Start Conversations
+Portfolio
 
-↓
+Social Links
 
-Meet People
-
-↓
-
-Follow Members
-
-↓
-
-Discover Opportunities
-
-↓
-
-Collaborate
-
-↓
-
-Build Reputation
-
-↓
-
-Grow Your Career
+Activity
 
 ---
 
-# BullChat Philosophy
+# Market Hub
 
-Every user journey should help people:
+Clean financial dashboard.
 
-- Connect
-- Collaborate
-- Build
-- Discover Opportunities
+Focus on:
 
-Every new feature should support at least one of these four pillars.
+Price
+
+Chart
+
+Liquidity
+
+Market Cap
+
+Volume
+
+Avoid flashy trading interfaces.
+
+---
+
+# Responsiveness
+
+Support:
+
+320px
+
+375px
+
+390px
+
+414px
+
+768px
+
+1024px
+
+1440px
+
+No horizontal scrolling.
+
+---
+
+# Performance
+
+Lazy load images.
+
+Virtualize long lists.
+
+Optimize bundle size.
+
+Minimize re-renders.
+
+Animations must remain 60fps.
+
+---
+
+# UI Non-Negotiables
+
+Never use gradients.
+
+Never use glassmorphism.
+
+Never use neon colors.
+
+Never use excessive animations.
+
+Never clutter screens.
+
+Never sacrifice readability.
+
+Never prioritize aesthetics over usability.
+
+---
+
+# Overall Feeling
+
+When someone opens BullChat, they should think:
+
+"This feels like where serious Web3 builders belong."
+
+Not:
+
+"This looks like another Discord clone."
+
+Every interface decision should reinforce professionalism, collaboration, trust, and opportunity.
