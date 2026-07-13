@@ -2160,6 +2160,10 @@ Stores every message awaiting moderation.
 | status | moderation_status |
 | assigned_to | UUID FK |
 | reviewed_at | TIMESTAMPTZ |
+| review_notes | TEXT |
+| review_action | TEXT |
+| resolved_by | UUID FK |
+| resolved_at | TIMESTAMPTZ |
 | created_at | TIMESTAMPTZ |
 
 Indexes
@@ -2186,6 +2190,14 @@ Stores every spam detection event.
 | severity | spam_severity |
 | rule_triggered | TEXT |
 | metadata | JSONB |
+Stores structured evidence including:
+
+- detected_token
+- detected_contract
+- matched_rule
+- confidence_score
+- extracted_symbols
+- extracted_addresses
 | created_at | TIMESTAMPTZ |
 
 Indexes
@@ -2214,14 +2226,20 @@ Defines automated moderation rules.
 
 Examples
 
+Examples
+
 - Excessive Caps
 - Flood Messages
 - Duplicate Messages
 - Scam Keywords
-- Contract Address
+- Unauthorized Token Mention
+- Unauthorized Contract Address
 - Fake Giveaway
 - Mass Mentions
 - External Invite Links
+- Repeated Shilling
+- Wallet Drainer Keywords
+- Phishing Links
 
 ---
 
@@ -2307,8 +2325,10 @@ Actions
 
 - Allowed
 - Hidden
-- Flagged
+- Hidden Pending Review
 - Escalated
+- Restored by Moderator
+- Permanently Removed
 
 ---
 
@@ -2494,15 +2514,30 @@ Approved Contract
 
 Unknown Token Mention
 
-⚠️ Flag for Review
+🚫 Hidden immediately.
 
 Unknown Contract Address
 
-🚫 Hidden Pending Review
+🚫 Hidden immediately.
 
-Repeat Offender
+The message is never published to other users.
 
-Increase Spam Score
+Instead it enters the moderation pipeline where moderators may:
+
+- Approve
+- Restore
+- Reject
+- Increase spam score
+- Restrict user
+
+Only tokens and contract addresses registered inside
+approved_tokens are allowed inside public chat rooms.
+
+For BullChat Version 1 this means only the official
+$ANSEM token and its verified contract address are allowed.
+
+Future communities will inherit the same rule using
+their own approved token registry.
 
 Future versions will support community-specific approved token lists.
 
@@ -2846,6 +2881,21 @@ Bug Hunter
 | awarded_by | UUID FK |
 | awarded_reason | TEXT |
 | awarded_at | TIMESTAMPTZ |
+
+Award Source
+
+Badges may be awarded:
+
+- Automatically (system)
+- Manually (admin)
+- Through milestone achievements
+
+For BullChat Version 1, the **OG Member** badge is automatically awarded
+to every account created before the official public launch date.
+
+This badge is permanent and cannot be removed except by the Owner.
+
+Future badges may have different award criteria.
 
 Examples of awarded_reason
 
