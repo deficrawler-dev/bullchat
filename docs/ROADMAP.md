@@ -74,6 +74,20 @@ Build the core BullChat experience with secure authentication, real-time messagi
 
 ---
 
+### OG Member Recognition
+
+BullChat recognizes early community members with a permanent **OG Member** badge.
+
+Features:
+
+- Permanent OG Member tag
+- Visible beside username
+- Displayed throughout the platform
+- Assigned only to eligible early members
+- Managed by administrators
+
+- ---
+
 ## Community Moderation (NEW)
 
 BullChat launches with proactive moderation instead of relying entirely on manual moderators.
