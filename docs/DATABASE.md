@@ -1,8 +1,84 @@
 # BullChat Database Specification
 
-Version: 2.0
+Version: 2.4
 
-Status: Production Architecture
+Status: Production Architecture (Approved)
+
+---
+
+# Changelog from v2.0
+
+This revision reconciles the v2.0 specification with what is already
+implemented and live in the BullChat Supabase project, per the
+Milestone 1 Phase 1 audit and the approved decisions that followed it.
+
+- **`users.id` remains the Supabase Auth ID directly** (`id references
+  auth.users(id)`). The `auth_id`-as-a-separate-column design proposed
+  in v2.0 is **not** adopted — every RLS policy, trigger, and
+  `SECURITY DEFINER` function already built compares `auth.uid()` to
+  `id`, and that continues to work unchanged under this revision.
+- `users` gains the new v2.0 fields that don't conflict with the above:
+  `role`, `status`, `reputation_score`, `spam_score`, `deleted_at`, and
+  a `wallet_address` uniqueness constraint. `auth_provider` and
+  `username_changed_at` — present in the live schema but missing from
+  v2.0 — are retained, since nothing in v2.0 called for their removal.
+- **Recovery Passcode** (Anonymous account recovery) is restored as an
+  official, documented feature. Its omission from v2.0 was accidental.
+  The full existing implementation — bcrypt verification, HMAC-indexed
+  O(1) lookup, key-versioning schema — is documented in Part 1A.
+- **Reserved Usernames** is restored as an official, documented
+  feature, in Part 1A.
+- **Username format validation stays entirely in the application
+  layer** (`src/services/users/validation.ts`), not the database
+  schema — `users.username` has no `CHECK` constraint on format, only
+  a `citext` uniqueness constraint. This is an explicit, deliberate
+  choice, not an oversight.
+- Every other table, enum, function, trigger, view, storage bucket, and
+  standard from v2.0 is carried forward as specified. Part 4
+  (Moderation & Anti-Spam) in particular is unchanged from v2.0 and
+  should be implemented exactly as written there.
+
+**v2.2 addendum:** the open RLS flag from v2.1 is now resolved.
+`users` is internal-only (owner/admin read), matching v2.0's original
+intent. `profiles` — the table plus two new `SECURITY DEFINER`
+functions introduced in this revision (Part 1B) — is the public-facing
+surface for username, display name, avatar, bio, badges, and
+reputation. This was the one piece of v2.1 left unresolved pending
+explicit confirmation; it's now final.
+
+**v2.3 addendum:** verified the v2.2 design against current
+Postgres/Supabase guidance, as requested. The original `public_profiles`
+**view** has been replaced with two `SECURITY DEFINER` **functions**
+(`get_public_profile`, `list_public_profiles`) — a plain view bypassing
+RLS by default is exactly what Supabase's Security Advisor flags as a
+"Security Definer View" warning, and the documented fix
+(`security_invoker = true`) doesn't work for this use case, since it
+would make the view enforce `users`' owner/admin RLS for the caller and
+return nothing for other users' profiles. Functions are the correct,
+Supabase-recommended pattern for this — see Part 1B for the full
+reasoning.
+
+**v2.4 addendum:** added a third `SECURITY DEFINER` function,
+`search_public_profiles`, to Part 1B — same column allowlist as
+`list_public_profiles`, plus a text query matched against username,
+display name, headline, and skills. This is the single backend for
+Global Search, Member Search, and @mention autocomplete, so those three
+features share one implementation and one exposed column set rather
+than three separately-maintained queries.
+- **Resolved: `users` is internal-only.** `users` now holds RLS
+  restricting SELECT/UPDATE to the row's owner and administrators —
+  the public-read policy live in production (`"Profiles are publicly
+  readable" using (true)`) is explicitly **replaced**, not preserved,
+  per this final decision. **`profiles` is the public-facing surface**
+  for user-identity information: username, display name, avatar, bio,
+  badges, and reputation (where exposed publicly) are all readable
+  through `profiles` and the `get_public_profile` /
+  `list_public_profiles` functions (Part 1B),
+  never by querying `users` directly. See Part 1B for the mechanism —
+  the identity fields that must stay authoritative on `users` (for the
+  reserved-username and cooldown triggers already built in Part 1A)
+  are exposed publicly through a dedicated view rather than by
+  loosening `users`' own RLS.
 
 ---
 
@@ -21,7 +97,8 @@ It serves as the single source of truth for:
 - Realtime architecture
 - Future scalability
 
-This document should be followed exactly when implementing BullChat in Supabase.
+This document should be followed exactly when implementing BullChat in
+Supabase.
 
 ---
 
@@ -41,7 +118,9 @@ Large Web3 Ecosystem
 
 The database must never assume there is only one community.
 
-Although Version 1 launches exclusively for the $ANSEM community, the schema must support multiple communities without requiring structural redesign.
+Although Version 1 launches exclusively for the $ANSEM community, the
+schema must support multiple communities without requiring structural
+redesign.
 
 Every table should prioritize:
 
@@ -87,6 +166,12 @@ id UUID PRIMARY KEY
 Never use integer IDs.
 
 UUIDs improve security and simplify distributed systems.
+
+**Exception, by design:** `users.id` is not a freshly generated UUID —
+it is set equal to `auth.users.id` at row creation, so the BullChat
+profile and the Supabase Auth identity share one id. This is the one
+place in the schema where the id is inherited rather than generated,
+and it is intentional (see Part 1A).
 
 ---
 
@@ -313,9 +398,18 @@ critical
 # Entity Relationship Overview
 
 ```
-users
+users (internal — owner/admin read only)
  │
- ├── profiles
+ ├── reserved_usernames (lookup — not a per-user FK, see Part 1A)
+ │
+ ├── recovery_passcodes
+ │
+ ├── get_public_profile() / list_public_profiles() /
+ │     search_public_profiles() (SECURITY DEFINER
+ │     functions — public read of an explicit column allowlist from
+ │     users + profiles, see Part 1B)
+ │
+ ├── profiles (public-facing extended data)
  │
  ├── follows
  │
@@ -356,54 +450,81 @@ rooms
 
 Purpose
 
-Stores authentication-related user data.
+Stores BullChat's core account record. Supabase Auth remains the
+authentication provider; this table is the BullChat-specific profile
+and account-state record for that identity.
 
-Supabase Auth remains the authentication provider.
-
-This table stores BullChat-specific information.
+**`id` is the Supabase Auth ID, not a separately generated UUID** —
+`id references auth.users(id) on delete cascade`. This is the
+foundation every existing RLS policy, trigger, and function is built
+on, and it is retained unchanged from the live implementation.
 
 Columns
 
 | Column | Type | Notes |
 |---------|------|------|
-| id | UUID | Primary Key |
-| auth_id | UUID | Supabase Auth ID |
-| username | VARCHAR(30) | Unique |
-| display_name | VARCHAR(60) | |
-| email | TEXT | Nullable |
-| avatar_url | TEXT | |
-| cover_url | TEXT | Nullable |
+| id | UUID | Primary Key. `references auth.users(id)`. Equals the Supabase Auth identity's own id — not independently generated. |
+| username | CITEXT | Unique, case-insensitive. Format rules (length, allowed characters) are enforced in the application layer, not here — see Part 1A. |
+| username_changed_at | TIMESTAMPTZ | Backs the 30-day username-change cooldown (Part 1A). Not present in the v2.0 draft; retained from the live schema. |
+| display_name | TEXT | |
+| email | TEXT | Nullable — Anonymous accounts have no email until upgraded. |
+| auth_provider | TEXT | `x`, `google`, or `anonymous`. Not present in the v2.0 draft; retained from the live schema, since Supabase Auth's own provider metadata isn't always convenient to query from RLS/trigger contexts, and this column makes provider-specific logic (e.g. Anonymous-only features) simple. |
+| avatar_url | TEXT | Nullable |
+| cover_image_url | TEXT | Nullable |
 | bio | TEXT | Nullable |
-| wallet_address | TEXT | Nullable |
+| wallet_address | TEXT | Nullable, unique when present (`UNIQUE NULLS DISTINCT` — new in this revision, from v2.0) |
 | country | TEXT | Nullable |
-| role | user_role | Default member |
-| status | user_status | Default active |
-| reputation_score | INTEGER | Default 0 |
-| spam_score | INTEGER | Default 0 |
-| last_seen | TIMESTAMPTZ | |
+| role | user_role | Default `member`. New in this revision, from v2.0. |
+| status | user_status | Default `active`. New in this revision, from v2.0. |
+| reputation_score | INTEGER | Default 0. New in this revision, from v2.0. |
+| spam_score | INTEGER | Default 0. New in this revision, from v2.0. |
+| last_seen | TIMESTAMPTZ | Nullable |
+| is_online | BOOLEAN | Default false. Retained from the live schema (v2.0 omitted this in favor of the separate `user_presence` table in Part 3 — both are kept: `is_online` for a cheap denormalized flag, `user_presence` for richer realtime state). |
+| deleted_at | TIMESTAMPTZ | Nullable — soft delete. New in this revision, from v2.0. |
 | created_at | TIMESTAMPTZ | |
 | updated_at | TIMESTAMPTZ | |
-| deleted_at | TIMESTAMPTZ | Nullable |
 
 Indexes
 
 - username
-- auth_id
 - wallet_address
 - status
 - reputation_score
+- role
 
 Constraints
 
-username UNIQUE
+- username UNIQUE (via `citext`)
+- wallet_address UNIQUE NULLS DISTINCT
+- auth_provider CHECK (`x`, `google`, `anonymous`)
 
-wallet_address UNIQUE NULLS DISTINCT
+Row Level Security
+
+- **SELECT:** owner or administrator only (`auth.uid() = id OR
+  auth.uid() in (select user_id from admin_users)` — or equivalently,
+  checking `role in ('admin', 'owner')` on the caller's own row; exact
+  predicate to be finalized during implementation). This **replaces**
+  the public-read policy live in production today — see Changelog.
+  Public-facing identity data is served through `profiles` and the
+  `get_public_profile` / `list_public_profiles` functions instead
+  (Part 1B).
+- **INSERT:** owner only (`auth.uid() = id`)
+- **UPDATE:** owner only (`auth.uid() = id`); administrators may update
+  moderation-relevant fields (`role`, `status`, `spam_score`) through a
+  separate, more restrictive policy or a `SECURITY DEFINER` function —
+  not a blanket admin UPDATE grant on the whole row.
+- **DELETE:** no client policy — account deletion is a future,
+  confirmation-gated Settings flow, not a bare RLS grant.
 
 Relationships
 
 users
 
 ↓
+
+reserved_usernames (lookup table, not a foreign key relationship)
+
+recovery_passcodes
 
 profiles
 
@@ -419,11 +540,376 @@ moderation_actions
 
 ---
 
+# Part 1A — Authentication Extensions
+
+Two features live entirely under `public.users` and its supporting
+tables, and are official parts of BullChat even though they don't
+appear in the general entity relationship diagram above as
+community-facing features. Both are already implemented and in
+production use; this section documents them as the authoritative
+specification.
+
+---
+
+## Username Format Validation
+
+Username format (length, character set, underscore placement) is
+**application-layer validation only** — there is no `CHECK` constraint
+on `users.username` enforcing it. The database enforces uniqueness
+(via `citext`) and the rules below (reservation, cooldown); everything
+about what a valid username *looks like* lives in
+`src/services/users/validation.ts`.
+
+Rules (enforced in application code):
+
+- 3–20 characters
+- lowercase only
+- numbers allowed
+- underscores allowed
+- no spaces
+- no consecutive underscores
+- cannot begin or end with an underscore
+
+Username Policy (mixed enforcement — see below):
+
+- Usernames are unique (database, via `citext`)
+- Usernames are case-insensitive (database, via `citext`)
+- Usernames can be changed once every 30 days (database, via trigger —
+  see below)
+- Display names can be changed at any time (no restriction, either
+  layer)
+
+---
+
+## Reserved Usernames
+
+### TABLE: reserved_usernames
+
+Purpose
+
+Usernames blocked from public signup until explicitly unlocked for a
+specific verified account.
+
+| Column | Type | Notes |
+|---------|------|------|
+| username | CITEXT | Primary Key |
+| reserved_type | TEXT | `system`, `founder`, or `community` |
+| note | TEXT | Nullable |
+| unlocked_for | UUID | Nullable, `references auth.users(id)`. NULL means nobody may claim it yet. |
+| created_at | TIMESTAMPTZ | |
+
+Seed Data
+
+System reserved: `admin`, `support`, `bullchat`, `bullchatapp`, `team`,
+`system`, `moderator`, `staff`, `security`, `help`, `official`,
+`notifications`, `jobs`, `news`, `market`, `verify`
+
+Founder reserved: `deficrawler` (reserved exclusively for BullChat's
+creator)
+
+Community reserved: `ansem` (reserved until ownership can be verified)
+
+Enforcement
+
+A `BEFORE INSERT OR UPDATE OF username` trigger on `users`
+(`check_reserved_username`) blocks any insert/update where the new
+username matches a `reserved_usernames` row whose `unlocked_for` is
+either `NULL` or a different user than the one making the change.
+
+Row Level Security
+
+- **SELECT:** public (needed for client-side username-availability
+  checks)
+- **INSERT / UPDATE / DELETE:** no client policy — managed only via
+  the Supabase dashboard or a service-role script when unlocking a
+  reservation for a verified account.
+
+---
+
+## Username Change Cooldown
+
+Enforced by a `BEFORE UPDATE OF username` trigger
+(`enforce_username_cooldown`) on `users`: if the new username differs
+from the old one and fewer than 30 days have passed since
+`username_changed_at`, the update is rejected. On a successful change,
+`username_changed_at` is reset to `now()`.
+
+---
+
+## Recovery Passcode
+
+Official BullChat feature (DATABASE.md v1's "Anonymous Accounts"
+section): the only recovery method for an Anonymous account.
+**BullChat cannot recover a lost Recovery Passcode.**
+
+### TABLE: recovery_passcodes
+
+Purpose
+
+Stores a hashed 6-digit numeric Recovery Passcode per user, plus the
+infrastructure needed to look one up in O(1) without ever exposing the
+hash.
+
+| Column | Type | Notes |
+|---------|------|------|
+| user_id | UUID | Primary Key, `references auth.users(id) on delete cascade` |
+| passcode_hash | TEXT | bcrypt hash (`pgcrypto`'s `crypt()` / `gen_salt('bf', 10)`). Verification source of truth. |
+| passcode_lookup_hash | TEXT | Nullable, **UNIQUE**. `HMAC-SHA256(secret, passcode)`, computed in the application layer only — see below. Enables O(1) lookup and, as a side effect, guarantees no two accounts can share an active passcode. |
+| lookup_key_version | SMALLINT | Default 1. Which HMAC key produced `passcode_lookup_hash` — supports future key rotation without forcing a passcode reset. |
+| created_at | TIMESTAMPTZ | |
+| updated_at | TIMESTAMPTZ | |
+
+Row Level Security
+
+**Enabled, with zero policies of any kind** — not even the owning user
+may `SELECT` this table directly. Every read/write happens through the
+`SECURITY DEFINER` functions below, none of which ever return a hash,
+a lookup value, or a secret to the caller.
+
+### Functions
+
+`set_recovery_passcode(user_id, passcode, lookup_hash, lookup_key_version)`
+— hashes and stores (or replaces) a passcode. Requires
+`auth.uid() = user_id`.
+
+`verify_recovery_passcode(user_id, passcode) returns boolean` —
+compares against the stored bcrypt hash. Callable while unauthenticated
+(`anon` role) — this is the actual identity-proving step during
+account recovery.
+
+`find_user_by_passcode_lookup(lookup_hash) returns uuid` — O(1) indexed
+lookup by pre-computed HMAC digest. Callable by `anon`.
+
+`find_user_by_recovery_passcode_legacy(passcode) returns uuid` —
+bounded fallback for rows with no lookup hash (predate the HMAC
+migration); scoped to `WHERE passcode_lookup_hash IS NULL` only, never
+a full-table scan. Callable by `anon`.
+
+### HMAC Key Management
+
+The HMAC secret (`RECOVERY_PASSCODE_HMAC_SECRET`, and any future
+versioned successor) lives **only** in the application server's
+environment variables — never in Postgres, in any form (no GUC, no
+Supabase Vault, no hardcoded function body). Postgres only ever
+receives an already-computed HMAC digest as an opaque string. This
+means a full database compromise reveals bcrypt hashes (safe: salted,
+slow, one-way) and HMAC digests (safe: unforgeable without a key that
+was never stored alongside them) — it does not reveal any plaintext
+passcode or a way to forge one.
+
+`lookup_key_version` exists so a future key rotation can be
+implemented as a bounded, self-healing fallback (structurally identical
+to the legacy-row fallback above) rather than forcing every user to
+reset their passcode. Rotation itself is not yet implemented — only the
+schema and application-layer key registry
+(`src/lib/recoveryPasscodeHmac.ts`) needed to support it later.
+
+### Known Operational Gap
+
+Rate limiting on `verify_recovery_passcode`,
+`find_user_by_passcode_lookup`, and
+`find_user_by_recovery_passcode_legacy` is **not yet implemented**. A
+6-digit passcode has only 1,000,000 possible values — bcrypt protects
+against a raw database leak, not an online brute-force loop. This must
+be addressed before Recovery Passcode is exposed to real users.
+
+---
+
+# Part 1B — Public Profile Surface
+
+`users` (Part 1) is internal: only the row's owner and administrators
+may read or write it. Nothing about a user is publicly visible by
+querying `users` directly — not even a username.
+
+The public-facing surface is `profiles`, in two pieces:
+
+1. **The `profiles` table itself** — extended information that only
+   ever lived here: headline, location, website, social links, skills,
+   projects, badges. Already public-read by design.
+2. **Two `SECURITY DEFINER` functions** — expose the specific
+   *identity* fields that must remain authoritative on `users`
+   (because the reserved-username and 30-day-cooldown triggers in
+   Part 1A are built against `users.username`) without granting any
+   read access to `users` itself.
+
+### Why functions, not a view (verified against current guidance)
+
+An earlier revision of this document specified a `public_profiles`
+**view** for this purpose. That design has been replaced after
+verifying it against current Postgres/Supabase guidance:
+
+- A plain Postgres view is owned by the creating role (typically
+  `postgres`, which has `BYPASSRLS`), so **by default it bypasses the
+  underlying table's RLS entirely** — not just for the intended public
+  columns, but structurally. Supabase's own Security Advisor lints
+  this exact pattern as a **"Security Definer View"** warning, because
+  it's easy to accidentally over-expose a table through a view that
+  looks safe at a glance.
+- The documented fix for that warning — setting `security_invoker =
+  true` on the view (Postgres 15+) — does **not** work for this
+  specific use case. `security_invoker = true` makes the view enforce
+  `users`' RLS *as the querying user*, which means a caller viewing
+  someone else's profile would hit `users`' owner/admin-only policy
+  and get **zero rows back**. The view would only ever return data for
+  the caller's own row, defeating the entire purpose of a public
+  profile surface.
+- The pattern Supabase's own documentation recommends for exactly this
+  situation — deliberately exposing a controlled, column-limited
+  subset of an RLS-restricted table to everyone — is a `SECURITY
+  DEFINER` **function**, not a view. This is also the same pattern
+  already used throughout Part 1A (`verify_recovery_passcode`,
+  `find_user_by_passcode_lookup`, etc.), so it's consistent with the
+  rest of this schema, not a one-off exception.
+
+### FUNCTION: get_public_profile
+
+Purpose
+
+Returns the public-safe identity fields for a single user, joined with
+their `profiles` row. The only way client code should read another
+user's identity fields — never by querying `users` directly.
+
+Signature
+
+`get_public_profile(p_user_id uuid) returns table (...)`
+
+`language sql`, `security definer`, `set search_path = public`,
+`stable`.
+
+Returned columns (explicit allowlist — the function's `SELECT` list
+itself, not a table grant, is what limits exposure)
+
+From `users`: `id`, `username`, `display_name`, `avatar_url`,
+`cover_image_url`, `bio`, `is_online`, `reputation_score` *(publicly
+exposed by product decision — see Milestone 7/Reputation System; if a
+future decision makes reputation private, remove it from this
+function's `SELECT` list only, not from `users`)*, `created_at`.
+
+From `profiles` (left-joined on `user_id = users.id`): `headline`,
+`location`, `website`, `twitter_url`, `github_url`, `telegram_url`,
+`discord_url`, `skills`, `projects`, `badges`.
+
+**Never included, under any circumstances:** `email`,
+`wallet_address`, `auth_provider`, `role`, `status`, `spam_score`,
+`deleted_at`, `username_changed_at`, or anything else not explicitly
+listed above.
+
+Grants
+
+`EXECUTE` granted to `anon` and `authenticated`. This function is
+*intentionally* exposed via the client API (called as
+`supabase.rpc('get_public_profile', { p_user_id })`) — the general
+guidance to avoid exposing `SECURITY DEFINER` functions unnecessarily
+applies to internal helper functions never meant for client use (like
+ones only called from inside another function or a trigger), not to
+this one, whose entire purpose is to be called by clients.
+
+### FUNCTION: list_public_profiles
+
+Purpose
+
+Cursor-paginated browsing of public profiles (e.g. a member directory
+or search results) — same column allowlist as `get_public_profile`,
+extended to many rows at once rather than requiring one RPC call per
+profile.
+
+Signature
+
+`list_public_profiles(p_limit integer default 50, p_cursor timestamptz
+default null) returns table (...)`
+
+Same `language sql`, `security definer`, `set search_path = public`,
+`stable` as above. Orders by `users.created_at desc`, filters to
+`created_at < p_cursor` when a cursor is provided — cursor pagination,
+not `OFFSET`, per the Performance Strategy standard elsewhere in this
+document. `deleted_at is null` is applied inside the function so soft-
+deleted accounts never appear in public listings.
+
+Grants
+
+`EXECUTE` granted to `anon` and `authenticated`, same reasoning as
+`get_public_profile`.
+
+### FUNCTION: search_public_profiles
+
+Purpose
+
+The single backend for **Global Search, Member Search, and @mention
+autocomplete** — one function, not three separate implementations, so
+search behavior and the exposed column set stay identical everywhere
+it's used.
+
+Signature
+
+`search_public_profiles(p_query text, p_limit integer default 50,
+p_cursor timestamptz default null) returns table (...)`
+
+Same `language sql`, `security definer`, `set search_path = public`,
+`stable`, same return shape (and therefore the same column allowlist)
+as `list_public_profiles`.
+
+Search behavior
+
+Matches `p_query` (case-insensitive) against:
+
+- `users.username`
+- `users.display_name`
+- `profiles.headline`
+- `profiles.skills` — a JSONB array of strings; matched via
+  `jsonb_array_elements_text(profiles.skills)` so a query like
+  `"solidity"` matches a user whose skills array contains that string,
+  not just a literal substring of the JSONB column's raw text.
+
+`deleted_at is null` is applied the same as `list_public_profiles`, and
+results are cursor-paginated the same way (`created_at < p_cursor`),
+so callers can treat this exactly like `list_public_profiles` with an
+added query term — including `@mention` autocomplete, which calls this
+with a short `p_limit` and no cursor on every keystroke.
+
+Performance note
+
+For anything beyond Milestone 1 scale, a plain `ILIKE '%query%'` scan
+across `username`/`display_name`/`headline` won't stay fast — add a
+`pg_trgm` (trigram) index on those three columns once query volume
+justifies it (`create extension if not exists pg_trgm;` +
+`create index ... using gin (username gin_trgm_ops)` per column). Not
+required for Milestone 1's launch scale, but the query shape above
+(`ILIKE` on indexed-friendly columns) is chosen specifically so that
+optimization is a pure index addition later, not a function rewrite.
+
+Grants
+
+`EXECUTE` granted to `anon` and `authenticated`, same reasoning as
+`get_public_profile`.
+
+### Security Note
+
+All three functions are the *only* sanctioned, deliberate exception to
+`users`' owner/admin-only RLS. The safety property that matters is
+**column-level, enforced in each function body's `SELECT` list** — not
+row-level, since all three intentionally return rows regardless of who's
+asking. `email`, `wallet_address`, `auth_provider`, `role`, `status`,
+`spam_score`, `deleted_at`, and `username_changed_at` must never be
+added to any of their return columns — this applies equally to
+`search_public_profiles`, including its search predicate: the search
+`WHERE` clause may reference internal columns like `role`/`status`
+server-side (e.g. excluding banned accounts from search results is
+reasonable), but the `SELECT`/`RETURNS TABLE` list must never surface
+them. `search_path` is pinned (`set search_path = public`) on all
+three, consistent with every other `SECURITY DEFINER` function in this
+document, to close the function-search-path-injection vector
+Supabase's linter also checks for.
+
+---
+
 # TABLE: profiles
 
 Purpose
 
-Stores extended public profile information.
+Stores extended public profile information, separate from the core
+`users` account record. Together with `get_public_profile` /
+`list_public_profiles` above, this is what public/community-facing UI
+should query — never `users` directly.
 
 Columns
 
@@ -455,6 +941,17 @@ Relationship
 ↓
 
 1 Profile
+
+Row Level Security
+
+- **SELECT:** public
+- **INSERT / UPDATE:** owner only
+- **DELETE:** admin only
+
+(For identity fields sourced from `users` — username, display name,
+avatar, bio — public read happens through the `get_public_profile` /
+`list_public_profiles` functions in Part 1B, not through `profiles`
+directly, since those columns don't live on this table.)
 
 ---
 
@@ -491,6 +988,12 @@ Indexes
 slug
 
 owner_id
+
+Row Level Security
+
+- **SELECT:** public
+- **INSERT / UPDATE:** admin
+- **DELETE:** owner
 
 ---
 
@@ -544,6 +1047,11 @@ slug
 
 position
 
+Row Level Security
+
+- **SELECT:** members
+- **INSERT / UPDATE / DELETE:** admin
+
 ---
 
 # TABLE: room_members
@@ -587,18 +1095,18 @@ rooms
 
 messages
 
-This hierarchy forms the foundation of BullChat.
-
-Every future feature builds upon this structure.
+This hierarchy forms the foundation of BullChat. Every future feature
+builds upon this structure.
 
 ---
 
-# Part 1 Complete
+## Part 1 Complete
 
-The database foundation is now established.
+The database foundation — including the retained Authentication
+Extensions in Part 1A and the public/internal split for user data in
+Part 1B — is now established.
 
 Next section:
-
 
 ## Part 2 — Messaging System
 
@@ -723,8 +1231,6 @@ Indexes
 
 - message_id
 
-- reply_message_id
-
 ---
 
 # TABLE: message_reactions
@@ -743,20 +1249,11 @@ Stores emoji reactions.
 
 Unique Constraint
 
-message_id
-
-+
-
-user_id
-
-+
-
-emoji
+message_id + user_id + emoji
 
 Indexes
 
 - message_id
-
 - user_id
 
 ---
@@ -777,7 +1274,6 @@ Tracks user mentions.
 Indexes
 
 - mentioned_user_id
-
 - message_id
 
 Automatically creates notification.
@@ -804,7 +1300,6 @@ Stores uploaded files.
 Indexes
 
 - message_id
-
 - uploader_id
 
 Supported
@@ -1119,14 +1614,14 @@ Never perform full table scans.
 
 Next:
 
-
 ## Part 3 — Direct Messages, Notifications & User Presence
 
 ---
 
 # Private Messaging Philosophy
 
-Direct Messages (DMs) are private conversations between two or more users.
+Direct Messages (DMs) are private conversations between two or more
+users.
 
 Requirements
 
@@ -1374,6 +1869,11 @@ Status Values
 Indexes
 
 - user_id
+
+Note: `users.is_online` (Part 1) remains as a cheap denormalized flag
+for quick reads; `user_presence` provides richer realtime state
+(current room, idle/away distinction). Both are retained — see Part 1's
+`users` table notes.
 
 ---
 
@@ -1746,6 +2246,10 @@ Indexes
 - user_id
 - total_score DESC
 
+Note: `users.spam_score` (Part 1) is a fast denormalized current-value
+column; `user_spam_scores` retains the fuller history/counters. Both
+are retained.
+
 ---
 
 # TABLE: approved_tokens
@@ -1974,7 +2478,8 @@ Thresholds should be configurable by administrators.
 
 BullChat Version 1
 
-Only the official $ANSEM token and its registered contract address are approved.
+Only the official $ANSEM token and its registered contract address are
+approved.
 
 Behavior
 
@@ -2113,7 +2618,6 @@ Cache approved token list in memory for fast validation.
 
 Next:
 
-
 ## Part 5 — Admin Platform, Reputation, Storage, Functions & Production Infrastructure
 
 ---
@@ -2230,6 +2734,14 @@ Maps users to administrative roles.
 | assigned_by | UUID FK |
 | assigned_at | TIMESTAMPTZ |
 
+Note: this table governs *platform admin* roles/permissions
+(fine-grained, Admin-Dashboard-facing). `users.role` (Part 1) is the
+coarser, always-present role used by ordinary RLS checks
+(anonymous/member/verified/moderator/admin/owner). Both are retained —
+`users.role` for everyday access checks, `admin_users` +
+`role_permissions` for the Admin Dashboard's granular permission
+system.
+
 ---
 
 # Reputation System
@@ -2283,6 +2795,10 @@ Indexes
 
 - user_id
 - created_at DESC
+
+Note: `users.reputation_score` (Part 1) is the fast denormalized
+current total; `reputation_events` is the full history it's computed
+from. Both are retained.
 
 ---
 
@@ -2539,6 +3055,15 @@ Removes follow.
 
 ---
 
+Already implemented (Part 1A), not new:
+
+set_recovery_passcode() / verify_recovery_passcode() /
+find_user_by_passcode_lookup() / find_user_by_recovery_passcode_legacy()
+/ check_reserved_username() / enforce_username_cooldown() /
+set_updated_at()
+
+---
+
 # Database Triggers
 
 After Message Insert
@@ -2594,6 +3119,9 @@ Terminate active sessions.
 After Username Change
 
 Update search index.
+
+Already implemented (Part 1A): `enforce_username_cooldown`,
+`check_reserved_username`.
 
 ---
 
@@ -2731,7 +3259,8 @@ Never disable RLS.
 
 Never expose service role keys to clients.
 
-All privileged operations should execute through secure server-side code.
+All privileged operations should execute through secure server-side
+code.
 
 Every admin action must create an audit log.
 
@@ -2741,7 +3270,10 @@ Every admin action must create an audit log.
 
 | Table | Read | Write | Update | Delete |
 |--------|------|-------|--------|--------|
-| users | Owner/Admin | Owner | Owner | Admin |
+| users | **Owner/Admin only** (public read removed — see Changelog) | Owner | Owner (+ restricted admin path for role/status/spam_score) | Admin |
+| get_public_profile / list_public_profiles / search_public_profiles (functions) | **Public** (EXECUTE granted to anon/authenticated) — explicit column allowlist enforced in each function body, see Part 1B | — (read-only) | — | — |
+| reserved_usernames | Public | System only | System only | System only |
+| recovery_passcodes | **None** (not even Owner — SECURITY DEFINER functions only) | System only | System only | System only |
 | profiles | Public | Owner | Owner | Admin |
 | communities | Public | Admin | Admin | Owner |
 | rooms | Members | Admin | Admin | Admin |
@@ -2785,7 +3317,8 @@ No schema redesign should be required for these additions.
 
 Every new table must include:
 
-- UUID Primary Key
+- UUID Primary Key (except `users`, which inherits its id from
+  `auth.users` by design — see Part 1)
 - created_at
 - updated_at
 - Appropriate Foreign Keys
@@ -2793,13 +3326,14 @@ Every new table must include:
 - Row Level Security
 - Audit Support (where applicable)
 
-Soft deletes should be preferred over hard deletes for user-generated content.
+Soft deletes should be preferred over hard deletes for user-generated
+content.
 
 ---
 
 # Production Readiness Checklist
 
-✅ UUID-based schema
+✅ UUID-based schema (with the one documented `users.id` exception)
 
 ✅ Normalized relational model
 
@@ -2831,10 +3365,19 @@ Soft deletes should be preferred over hard deletes for user-generated content.
 
 ✅ Future-proof design
 
+✅ Recovery Passcode (Anonymous account recovery)
+
+✅ Reserved Usernames
+
 ---
 
 # DATABASE.md Complete
 
-This document defines the complete production database architecture for BullChat and serves as the authoritative specification for backend implementation.
+This document defines the complete production database architecture
+for BullChat and serves as the authoritative specification for backend
+implementation. It reconciles the v2.0 draft with what is already
+implemented and live, per the approved audit decisions recorded in the
+Changelog above.
 
-Any schema changes should be reflected in this document before implementation.
+Any schema changes should be reflected in this document before
+implementation.
