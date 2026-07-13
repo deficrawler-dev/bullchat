@@ -291,6 +291,20 @@ Benefits:
 
 Core tables include:
 
+---
+
+## profiles
+
+Stores professional profile information.
+
+Additional fields include:
+
+- OG Member status
+- Verification status
+- Reputation summary
+
+- ---
+
 ## users
 
 Stores user accounts.
