@@ -725,7 +725,7 @@ The public-facing surface is `profiles`, in two pieces:
 
 1. **The `profiles` table itself** — extended information that only
    ever lived here: headline, location, website, social links, skills,
-   projects, badges. Already public-read by design.
+   and projects. Badges are managed through the user_badges table.
 2. **Two `SECURITY DEFINER` functions** — expose the specific
    *identity* fields that must remain authoritative on `users`
    (because the reserved-username and 30-day-cooldown triggers in
@@ -926,7 +926,6 @@ Columns
 | discord_url | TEXT |
 | skills | JSONB |
 | projects | JSONB |
-| badges | JSONB |
 | created_at | TIMESTAMPTZ |
 | updated_at | TIMESTAMPTZ |
 
@@ -980,6 +979,7 @@ Columns
 | visibility | community_visibility |
 | owner_id | UUID FK |
 | verified | BOOLEAN |
+| member_count | INTEGER |
 | created_at | TIMESTAMPTZ |
 | updated_at | TIMESTAMPTZ |
 
@@ -1037,6 +1037,7 @@ Columns
 | room_type | room_type |
 | position | INTEGER |
 | is_archived | BOOLEAN |
+| message_count | INTEGER |
 | created_at | TIMESTAMPTZ |
 
 Indexes
@@ -2821,13 +2822,13 @@ Examples
 
 Founder
 
+OG Member
+
 Verified
 
 Builder
 
 Moderator
-
-Early Supporter
 
 Top Contributor
 
@@ -2843,7 +2844,18 @@ Bug Hunter
 | badge_id | UUID FK |
 | user_id | UUID FK |
 | awarded_by | UUID FK |
+| awarded_reason | TEXT |
 | awarded_at | TIMESTAMPTZ |
+
+Examples of awarded_reason
+
+Genesis Launch
+
+Manual Award
+
+Community Achievement
+
+Event Reward
 
 ---
 
