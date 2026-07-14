@@ -131,15 +131,15 @@ Every design decision should prioritize usability over decoration.
 
 Logo with name
 
-https://raw.githubusercontent.com/deficrawler-dev/bullchat/refs/heads/main/LogoX.png
+https://raw.githubusercontent.com/deficrawler-dev/bullchat/refs/heads/main/public/branding/LogoX.png
 
 Logo only
 
-https://raw.githubusercontent.com/deficrawler-dev/bullchat/refs/heads/main/Bullchatlogo.png
+https://raw.githubusercontent.com/deficrawler-dev/bullchat/refs/heads/main/public/branding/Bullchatlogo.png
 
 Background image
 
-https://raw.githubusercontent.com/deficrawler-dev/bullchat/refs/heads/main/Bullchaatbackground.jpeg
+https://raw.githubusercontent.com/deficrawler-dev/bullchat/refs/heads/main/public/branding/Bullchaatbackground.jpeg
 
 These are the official BullChat assets.
 
