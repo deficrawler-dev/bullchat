@@ -33,6 +33,21 @@ Milestone 1 Phase 1 audit and the approved decisions that followed it.
   schema — `users.username` has no `CHECK` constraint on format, only
   a `citext` uniqueness constraint. This is an explicit, deliberate
   choice, not an oversight.
+- **Resolved: `users` is internal-only.** `users` now holds RLS
+  restricting SELECT/UPDATE to the row's owner and administrators —
+  the public-read policy live in production (`"Profiles are publicly
+  readable" using (true)`) is explicitly **replaced**, not preserved,
+  per this final decision. **`profiles` is the public-facing surface**
+  for user-identity information: username, display name, avatar, bio,
+  badges, and reputation (where exposed publicly) are all readable
+  through `profiles` and the `get_public_profile`,
+  `list_public_profiles`, and `search_public_profiles` functions
+  (Part 1B), never by querying `users` directly. See Part 1B for the
+  mechanism — the identity fields that must stay authoritative on
+  `users` (for the reserved-username and cooldown triggers already
+  built in Part 1A) are exposed publicly through dedicated
+  `SECURITY DEFINER` functions rather than by loosening `users`' own
+  RLS.
 - Every other table, enum, function, trigger, view, storage bucket, and
   standard from v2.0 is carried forward as specified. Part 4
   (Moderation & Anti-Spam) in particular is unchanged from v2.0 and
@@ -65,20 +80,7 @@ display name, headline, and skills. This is the single backend for
 Global Search, Member Search, and @mention autocomplete, so those three
 features share one implementation and one exposed column set rather
 than three separately-maintained queries.
-- **Resolved: `users` is internal-only.** `users` now holds RLS
-  restricting SELECT/UPDATE to the row's owner and administrators —
-  the public-read policy live in production (`"Profiles are publicly
-  readable" using (true)`) is explicitly **replaced**, not preserved,
-  per this final decision. **`profiles` is the public-facing surface**
-  for user-identity information: username, display name, avatar, bio,
-  badges, and reputation (where exposed publicly) are all readable
-  through `profiles` and the `get_public_profile` /
-  `list_public_profiles` functions (Part 1B),
-  never by querying `users` directly. See Part 1B for the mechanism —
-  the identity fields that must stay authoritative on `users` (for the
-  reserved-username and cooldown triggers already built in Part 1A)
-  are exposed publicly through a dedicated view rather than by
-  loosening `users`' own RLS.
+
 
 ---
 
