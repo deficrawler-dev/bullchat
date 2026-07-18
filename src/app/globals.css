@@ -1,0 +1,110 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand colors */
+  --color-brand: #7CFF2B;
+  --color-brand-secondary: #4DBA1E;
+  --color-brand-deep: #1F6F1C;
+
+  /* Neutral surfaces */
+  --color-bg: #0D0F10;
+  --color-surface: #171A1D;
+  --color-surface-elevated: #202529;
+  --color-border: #2C3136;
+
+  /* Foreground / text */
+  --color-fg: #F5F7FA;
+  --color-fg-secondary: #A1AAB3;
+  --color-fg-muted: #737B86;
+  --color-fg-disabled: #5C636B;
+
+  /* Semantic */
+  --color-success: #22C55E;
+  --color-warning: #F59E0B;
+  --color-danger: #EF4444;
+  --color-info: #38BDF8;
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-pill: 999px;
+
+  /* Typography scale */
+  --text-display: 3rem;
+  --text-h1: 2.25rem;
+  --text-h2: 1.875rem;
+  --text-h3: 1.5rem;
+  --text-h4: 1.25rem;
+  --text-body: 1rem;
+  --text-small: 0.875rem;
+  --text-caption: 0.75rem;
+
+  --font-sans: var(--font-geist-sans), var(--font-inter), system-ui, sans-serif;
+}
+
+html,
+body {
+  min-height: 100dvh;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+}
+
+*:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes drawer-in-left {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes drawer-in-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@layer utilities {
+  .animate-overlay {
+    animation: overlay-in 200ms ease-out;
+  }
+  .animate-drawer-left {
+    animation: drawer-in-left 200ms ease-out;
+  }
+  .animate-drawer-right {
+    animation: drawer-in-right 200ms ease-out;
+  }
+}
