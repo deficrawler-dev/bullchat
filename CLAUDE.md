@@ -127,27 +127,49 @@ Every design decision should prioritize usability over decoration.
 
 ---
 
-# Brand Assets
+## Brand Assets
 
-Logo with name
+### Full Logo (Logo + Wordmark)
 
-https://raw.githubusercontent.com/deficrawler-dev/bullchat/refs/heads/main/public/branding/LogoX.png
+https://raw.githubusercontent.com/deficrawler-dev/bullchat/refs/heads/main/public/branding/bullchat-logo.png
 
-Logo only
+Use for:
+- Landing pages
+- Authentication screens
+- Documentation
+- Marketing materials
+- Social media graphics
+- Anywhere the complete BullChat brand should be displayed
 
-https://raw.githubusercontent.com/deficrawler-dev/bullchat/refs/heads/main/public/branding/Bullchatlogo.png
+---
 
-Background image
+### App Icon (Logo Only)
+
+https://raw.githubusercontent.com/deficrawler-dev/bullchat/refs/heads/main/public/branding/bull-icon.png
+
+Use for:
+- Sidebar navigation
+- Mobile navigation
+- App icon
+- Favicon
+- Profile/avatar placeholders
+- Compact UI elements where space is limited
+
+---
+
+### Background Image
 
 https://raw.githubusercontent.com/deficrawler-dev/bullchat/refs/heads/main/public/branding/Bullchaatbackground.jpeg
 
-These are the official BullChat assets.
+---
 
-Never recreate, redesign, recolor, or replace the logo unless explicitly instructed.
+These are the official BullChat brand assets.
 
-Always preserve the logo's proportions, spacing, and quality.
-
-Use the transparent logo whenever possible.
+- Never recreate, redesign, recolor, stretch, distort, or replace the logo unless explicitly instructed.
+- Always preserve the logo's proportions, spacing, and image quality.
+- Use the transparent PNG versions whenever possible.
+- Use the full logo for branding and the app icon for compact UI components.
+- Do not substitute one asset for the other unless explicitly instructed.
 
 ---
 
