@@ -1,7 +1,4 @@
-"use client";
-
 import { RoomCard } from "@/components/home/RoomCard";
-import { SectionHeader } from "@/components/home/SectionHeader";
 
 interface HomeDashboardProps {
   displayName?: string;
@@ -9,92 +6,130 @@ interface HomeDashboardProps {
 }
 
 interface RoomSeed {
-  id: string;
+  slug: string;
+  thumbnailSlug: string;
   name: string;
   description: string;
-  memberCount: number;
-  onlineCount?: number;
-  category?: string;
-  featured?: boolean;
+  memberCount: string;
+  onlineCount?: string;
+  lastActivityAt?: string;
+  flagship?: boolean;
+  popular?: boolean;
   joined?: boolean;
 }
 
-const TRENDING_ROOMS: RoomSeed[] = [
+const ROOMS: RoomSeed[] = [
   {
-    id: "ansem-general",
-    name: "$ANSEM General",
+    slug: "ansem-community",
+    thumbnailSlug: "ansem-community",
+    name: "Ansem Community",
     description:
-      "The main hub for community-wide discussion and announcements.",
-    memberCount: 25300,
-    onlineCount: 412,
-    category: "General",
-    featured: true,
+      "Announcements, discussions, and connection across the $ANSEM community.",
+    memberCount: "25.3K members",
+    onlineCount: "412 online",
+    flagship: true,
+    popular: true,
     joined: true,
   },
   {
-    id: "builders-hub",
-    name: "Builders Hub",
+    slug: "bull-community",
+    thumbnailSlug: "bull-community",
+    name: "Bull Community",
     description:
-      "Where members share progress and collaborate on projects.",
-    memberCount: 4200,
-    onlineCount: 89,
-    category: "Building",
-    joined: false,
+      "Connect and grow with members across the wider Bull community.",
+    memberCount: "12.8K members",
+    onlineCount: "236 online",
+    popular: true,
+    joined: true,
   },
   {
-    id: "crypto-experiences",
-    name: "Crypto Experiences",
+    slug: "builders",
+    thumbnailSlug: "builders",
+    name: "Builders",
     description:
-      "Stories and lessons learned from navigating Web3.",
-    memberCount: 1850,
-    category: "Discussion",
-    joined: false,
+      "Share progress, collaborate on ideas, and build projects together.",
+    memberCount: "4.2K members",
+    onlineCount: "89 online",
+    popular: true,
   },
-];
-
-const RECENT_ROOMS: RoomSeed[] = [
   {
-    id: "market-talk",
+    slug: "job-board",
+    thumbnailSlug: "job-board",
+    name: "Job Board",
+    description:
+      "Discover jobs, gigs, and opportunities shared by the community.",
+    memberCount: "3.1K members",
+  },
+  {
+    slug: "market-talk",
+    thumbnailSlug: "market-talk",
     name: "Market Talk",
     description:
-      "Ongoing conversation about market movement and sentiment.",
-    memberCount: 6100,
-    onlineCount: 143,
-    category: "Market",
-    joined: true,
+      "Discuss market movements, sentiment, strategies, and opportunities.",
+    memberCount: "6.1K members",
+    onlineCount: "143 online",
   },
   {
-    id: "community-support",
-    name: "Community Support",
+    slug: "meme-studio",
+    thumbnailSlug: "meme-studio",
+    name: "Meme Studio",
     description:
-      "Ask questions and get help from experienced members.",
-    memberCount: 950,
-    joined: true,
+      "Create and share community culture, humor, and original content.",
+    memberCount: "2.4K members",
+    onlineCount: "52 online",
+  },
+  {
+    slug: "wins-losses",
+
+    // Temporary image until Wins & Losses assets are designed.
+    thumbnailSlug: "market-talk",
+
+    name: "Wins & Losses",
+    description:
+      "Share your best wins, toughest losses, and lessons from crypto.",
+    memberCount: "1.8K members",
+  },
+  {
+    slug: "off-topic",
+
+    // Temporary image until Off Topic assets are designed.
+    thumbnailSlug: "builders",
+
+    name: "Off Topic",
+    description:
+      "Relax and connect through conversations beyond crypto and building.",
+    memberCount: "1.2K members",
+    onlineCount: "31 online",
   },
 ];
 
-const SUGGESTED_ROOMS: RoomSeed[] = [
-  {
-    id: "design-lab",
-    name: "Design Lab",
-    description:
-      "Feedback and critique for BullChat community designers.",
-    memberCount: 620,
-    category: "Design",
-    joined: false,
-  },
-  {
-    id: "founders-circle",
-    name: "Founders Circle",
-    description:
-      "A focused space for founders building in the ecosystem.",
-    memberCount: 310,
-    category: "Founders",
-    joined: false,
-  },
-];
+const POPULAR_ROOMS = ROOMS.filter((room) => room.popular);
+const YOUR_ROOMS = ROOMS.filter((room) => room.joined);
+const EXPLORE_ROOMS = ROOMS.filter((room) => !room.joined);
 
-function noop() {}
+interface SectionHeadingProps {
+  title: string;
+  description?: string;
+}
+
+function SectionHeading({
+  title,
+  description,
+}: SectionHeadingProps) {
+  return (
+    <div>
+      <h2 className="text-xl font-semibold leading-tight text-fg sm:text-2xl">
+        {title}
+      </h2>
+
+      {description && (
+        <p className="mt-1 text-sm leading-relaxed text-fg-secondary">
+          {description}
+        </p>
+      )}
+    </div>
+  );
+}
 
 export function HomeDashboard({
   displayName = "DefiCrawler",
@@ -102,85 +137,110 @@ export function HomeDashboard({
 }: HomeDashboardProps) {
   return (
     <div
-      className={`mx-auto flex w-full max-w-5xl flex-col gap-8 p-4 sm:p-6 ${className}`}
+      className={[
+        "w-full min-w-0 pb-28 pt-5 text-left",
+        "sm:pb-8",
+        "lg:mx-auto lg:max-w-6xl lg:px-6 lg:pt-8",
+        className,
+      ].join(" ")}
     >
-      <section className="flex flex-col gap-1">
-        <p className="text-small text-fg-secondary">Welcome back</p>
+      <section className="px-4 sm:px-6 lg:px-0">
+        <p className="text-xs text-fg-secondary">
+          Welcome back,
+        </p>
 
-        <h1 className="text-h3 font-semibold text-fg">{displayName}</h1>
+        <h1 className="mt-1 text-2xl font-semibold leading-tight text-fg">
+          {displayName}
+        </h1>
 
-        <p className="text-small text-fg-secondary">
-          Discover active conversations across the community.
+        <p className="mt-2 max-w-md text-sm leading-relaxed text-fg-secondary">
+          Join conversations and connect with people across BullChat.
         </p>
       </section>
 
-      <section className="flex flex-col gap-4">
-        <SectionHeader
-          title="Trending Rooms"
-          description="Popular rooms across the community."
-        />
+      <section className="mt-9 min-w-0">
+        <div className="px-4 sm:px-6 lg:px-0">
+          <SectionHeading
+            title="Popular Communities"
+            description="Active spaces people are joining right now."
+          />
+        </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {TRENDING_ROOMS.map((room) => (
+        <div
+          className="
+            hide-scrollbar mt-4 flex w-full
+            snap-x snap-mandatory gap-3
+            overflow-x-auto overscroll-x-contain
+            pb-2 pl-4 pr-0
+            sm:gap-4 sm:pl-6
+            lg:pl-0
+          "
+        >
+          {POPULAR_ROOMS.map((room) => (
             <RoomCard
-              key={room.id}
+              key={room.slug}
+              variant="popular"
+              slug={room.slug}
+              thumbnailSlug={room.thumbnailSlug}
               name={room.name}
               description={room.description}
               memberCount={room.memberCount}
               onlineCount={room.onlineCount}
-              category={room.category}
-              featured={room.featured}
-              joined={room.joined}
-              onJoin={noop}
-              onOpen={noop}
+              lastActivityAt={room.lastActivityAt}
+              flagship={room.flagship}
+              defaultJoined={room.joined}
+            />
+          ))}
+
+          <div
+            className="w-1 shrink-0 sm:w-2"
+            aria-hidden="true"
+          />
+        </div>
+      </section>
+
+      <section className="mt-10 px-4 sm:px-6 lg:px-0">
+        <SectionHeading title="Your Communities" />
+
+        <div className="mt-4">
+          {YOUR_ROOMS.map((room) => (
+            <RoomCard
+              key={room.slug}
+              variant="list"
+              slug={room.slug}
+              thumbnailSlug={room.thumbnailSlug}
+              name={room.name}
+              description={room.description}
+              memberCount={room.memberCount}
+              onlineCount={room.onlineCount}
+              lastActivityAt={room.lastActivityAt}
+              flagship={room.flagship}
+              defaultJoined={room.joined}
             />
           ))}
         </div>
       </section>
 
-      <section className="flex flex-col gap-4">
-        <SectionHeader
-          title="Recently Active"
-          description="Rooms you've been part of recently."
+      <section className="mt-10 px-4 sm:px-6 lg:px-0">
+        <SectionHeading
+          title="Explore Communities"
+          description="Find more conversations worth joining."
         />
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {RECENT_ROOMS.map((room) => (
+        <div className="mt-4">
+          {EXPLORE_ROOMS.map((room) => (
             <RoomCard
-              key={room.id}
+              key={room.slug}
+              variant="list"
+              slug={room.slug}
+              thumbnailSlug={room.thumbnailSlug}
               name={room.name}
               description={room.description}
               memberCount={room.memberCount}
               onlineCount={room.onlineCount}
-              category={room.category}
-              featured={room.featured}
-              joined={room.joined}
-              onJoin={noop}
-              onOpen={noop}
-            />
-          ))}
-        </div>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <SectionHeader
-          title="Suggested Rooms"
-          description="Rooms you might want to join."
-        />
-
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {SUGGESTED_ROOMS.map((room) => (
-            <RoomCard
-              key={room.id}
-              name={room.name}
-              description={room.description}
-              memberCount={room.memberCount}
-              onlineCount={room.onlineCount}
-              category={room.category}
-              featured={room.featured}
-              joined={room.joined}
-              onJoin={noop}
-              onOpen={noop}
+              lastActivityAt={room.lastActivityAt}
+              flagship={room.flagship}
+              defaultJoined={room.joined}
             />
           ))}
         </div>

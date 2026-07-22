@@ -2,27 +2,27 @@
 
 @theme {
   /* Brand colors */
-  --color-brand: #7CFF2B;
-  --color-brand-secondary: #4DBA1E;
-  --color-brand-deep: #1F6F1C;
+  --color-brand: #7cff2b;
+  --color-brand-secondary: #4dba1e;
+  --color-brand-deep: #1f6f1c;
 
   /* Neutral surfaces */
-  --color-bg: #0D0F10;
-  --color-surface: #171A1D;
+  --color-bg: #0d0f10;
+  --color-surface: #171a1d;
   --color-surface-elevated: #202529;
-  --color-border: #2C3136;
+  --color-border: #2c3136;
 
   /* Foreground / text */
-  --color-fg: #F5F7FA;
-  --color-fg-secondary: #A1AAB3;
-  --color-fg-muted: #737B86;
-  --color-fg-disabled: #5C636B;
+  --color-fg: #f5f7fa;
+  --color-fg-secondary: #a1aab3;
+  --color-fg-muted: #737b86;
+  --color-fg-disabled: #5c636b;
 
   /* Semantic */
-  --color-success: #22C55E;
-  --color-warning: #F59E0B;
-  --color-danger: #EF4444;
-  --color-info: #38BDF8;
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+  --color-info: #38bdf8;
 
   /* Radius */
   --radius-sm: 8px;
@@ -41,22 +41,136 @@
   --text-small: 0.875rem;
   --text-caption: 0.75rem;
 
-  --font-sans: var(--font-geist-sans), var(--font-inter), system-ui, sans-serif;
+  --font-sans:
+    var(--font-geist-sans),
+    var(--font-inter),
+    system-ui,
+    sans-serif;
 }
 
-html,
+html {
+  min-height: 100%;
+  background-color: var(--color-bg);
+}
+
 body {
   min-height: 100dvh;
-}
-
-body {
+  margin: 0;
+  overflow-x: hidden;
   background-color: var(--color-bg);
   color: var(--color-fg);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
 }
 
 *:focus-visible {
   outline: 2px solid var(--color-brand);
   outline-offset: 2px;
+}
+
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes drawer-in-left {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes drawer-in-right {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@layer utilities {
+  .animate-overlay {
+    animation: overlay-in 200ms ease-out;
+  }
+
+  .animate-drawer-left {
+    animation: drawer-in-left 200ms ease-out;
+  }
+
+  .animate-drawer-right {
+    animation: drawer-in-right 200ms ease-out;
+  }
+
+  .hide-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* BullChat scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(118, 229, 29, 0.22) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(118, 229, 29, 0.16);
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(118, 229, 29, 0.34);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -67,44 +181,5 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
-  }
-}
-
-@keyframes overlay-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes drawer-in-left {
-  from {
-    transform: translateX(-100%);
-  }
-  to {
-    transform: translateX(0);
-  }
-}
-
-@keyframes drawer-in-right {
-  from {
-    transform: translateX(100%);
-  }
-  to {
-    transform: translateX(0);
-  }
-}
-
-@layer utilities {
-  .animate-overlay {
-    animation: overlay-in 200ms ease-out;
-  }
-  .animate-drawer-left {
-    animation: drawer-in-left 200ms ease-out;
-  }
-  .animate-drawer-right {
-    animation: drawer-in-right 200ms ease-out;
   }
 }

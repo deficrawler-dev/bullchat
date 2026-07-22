@@ -15,14 +15,23 @@ export function RoomCard({ room }: RoomCardProps) {
       <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-surface-elevated text-brand">
         <Users size={20} strokeWidth={1.75} aria-hidden="true" />
       </div>
+
       <div className="min-w-0 flex-1">
-        <p className="truncate text-body font-medium text-fg" title={room.name}>
+        <p
+          className="truncate text-body font-medium text-fg"
+          title={room.name}
+        >
           {room.name}
         </p>
-        <p className="truncate text-small text-fg-secondary" title={room.description}>
+
+        <p
+          className="truncate text-small text-fg-secondary"
+          title={room.description}
+        >
           {room.description}
         </p>
       </div>
+
       <span className="shrink-0 text-caption text-fg-muted">
         {room.memberCount} {room.memberCount === 1 ? "member" : "members"}
       </span>

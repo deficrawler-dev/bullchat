@@ -1,10 +1,37 @@
-import { Home, User, LineChart, Bell, Settings } from "lucide-react";
+import {
+  Bell,
+  Home,
+  MessageCircle,
+  User,
+  Users,
+} from "lucide-react";
+
 import type { NavItem } from "@/types/navigation";
 
 export const NAV_ITEMS: NavItem[] = [
-  { label: "Home", href: "/", icon: Home },
-  { label: "Profile", href: "/profile", icon: User },
-  { label: "Market", href: "/market", icon: LineChart },
-  { label: "Notifications", href: "/notifications", icon: Bell },
-  { label: "Settings", href: "/settings", icon: Settings },
+  {
+    label: "Home",
+    href: "/",
+    icon: Home,
+  },
+  {
+    label: "Rooms",
+    href: "/rooms",
+    icon: Users,
+  },
+  {
+    label: "Messages",
+    href: "/messages",
+    icon: MessageCircle,
+  },
+  {
+    label: "Notifications",
+    href: "/notifications",
+    icon: Bell,
+  },
+  {
+    label: "Profile",
+    href: "/profile",
+    icon: User,
+  },
 ];

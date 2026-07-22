@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Geist, Inter } from "next/font/google";
+
 import "./globals.css";
 
 const geistSans = Geist({
@@ -18,10 +19,17 @@ export const metadata: Metadata = {
   description: "The professional home for Web3 communities.",
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+interface RootLayoutProps {
+  children: ReactNode;
+}
+
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${inter.variable}`}>
-      <body className="bg-red-500 text-white p-10">{children}</body>
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${inter.variable}`}
+    >
+      <body>{children}</body>
     </html>
   );
 }
