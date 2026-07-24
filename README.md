@@ -1,6 +1,15 @@
 # 🐂 BullChat
 
 > The professional home for Web3 communities.
+>
+> <p>
+  <img src="https://img.shields.io/badge/Status-Active%20Development-F97316" alt="Project status" />
+  <img src="https://img.shields.io/badge/Version-0.1.0-76E51D" alt="Version" />
+  <img src="https://img.shields.io/badge/Next.js-16-000000" alt="Next.js" />
+  <img src="https://img.shields.io/badge/TypeScript-Ready-3178C6" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/License-Private-555555" alt="License" />
+  <img src="https://img.shields.io/badge/Built%20for-%24ANSEM-76E51D" alt="Built for ANSEM" />
+</p>
 
 BullChat is a modern, real-time community platform built specifically for Web3.
 
